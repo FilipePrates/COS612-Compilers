@@ -1,0 +1,33 @@
+%{
+// Código em c/c++
+
+#include <iostream>
+
+using namespace std;
+
+string lexema;
+
+%}
+/* Coloque aqui definições regulares */
+
+WS	[ \t\n]
+
+%%
+    /* Padrões e ações. Nesta seção, comentários devem ter um tab antes */
+{WS} {} 
+
+[Ff][Oo][Rr] { lexema = yytext; return _FOR; }
+[Ii][Ff] { lexema = yytext; return _IF; }
+
+">=" { lexema = yytext; return _MAIG; }
+"<=" { lexema = yytext; return _MEIG; }
+"==" { lexema = yytext; return _IG; }
+"!=" { lexema = yytext; return _DIF; }
+
+[0-9]+[.]?[0-9]*[e]?[+]?[-]?[0-9]+ { lexema = yytext; return _FLOAT; }
+[0-9]+ { lexema = yytext; return _INT; }
+[$a-zA-Z_][a-zA-Z0-9_]* { lexema = yytext; return _ID; }
+[$a-zA-Z_][$a-zA-Z0-9_]* { lexema = yytext; printf( "Erro: Identificador invalido: %s\n", lexema.c_str()); }
+
+. { lexema = yytext; return yytext[0]; }
+%%
