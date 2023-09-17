@@ -16,7 +16,6 @@ auto p = &yyunput; // Para evitar uma warning de 'unused variable'
 
 int main() {
   int token = 0;
-  
   while( (token = yylex()) != 0 )  
     printf( "%d %s\n", token, lexema.c_str() );
   
