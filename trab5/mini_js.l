@@ -40,7 +40,6 @@ BOOLEAN    "true"|"false"
 {BOOLEAN}  { return token( BOOLEAN ); }	
 
 	
-
 "&&"	   { return token( AND ); }
 "||"	   { return token( OR ); }
 "<="	   { return token( ME_IG ); }
@@ -60,6 +59,7 @@ BOOLEAN    "true"|"false"
 "while"    { return token( WHILE ); }
 "function" { return token( FUNCTION ); }
 "return"   { return token( RETURN );}
+")"\.*"=>" { return token( FECHA_PARENTESES_FUNC );}
 
 "asm{".*"}"  {  
                 vector<string> v;

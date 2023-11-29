@@ -98,14 +98,14 @@ void print( vector<string> codigo ) {
 }
 %}
 
-%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT
+%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT FECHA_PARENTESES_FUNC
 %token CDOUBLE CSTRING CINT
 %token AND OR ME_IG MA_IG DIF IGUAL
 %token MAIS_IGUAL
 
-%right '=' MAIS_IGUAL
+%right '=' MAIS_IGUAL FECHA_PARENTESES_FUNC
 %nonassoc '<' '>' IGUAL
-%left '+' '-'
+%left '+' '-' 
 %left '*' '/' '%'
 
 %left MAIS_MAIS
@@ -119,7 +119,7 @@ S : CMDs { print(resolve_enderecos( $1.c + "." + funcoes)); }
   ;
 
 CMDs : CMDs CMD  { $$.c = $1.c + $2.c; };
-     |           { $$.clear(); }
+     |           { $$.clear();}
      ;
      
 CMD : CMD_FUNCTION
@@ -136,17 +136,20 @@ CMD : CMD_FUNCTION
     | E ';'
       { $$.c = $1.c + "^"; };
     | '{' EMPILHA_TS CMDs '}' 
-      { ts.pop_back();
-        $$.c = vector<string>{"<{"} + $3.c + vector<string>{"{>"}; }
+      { 
+        ts.pop_back();
+        $$.c = vector<string>{"<{"} + $3.c + vector<string>{"}>"}; }
     | E ASM ';' 	{ $$.c = $1.c + $2.c; }
     | ';' { $$.clear();}
     ;
+
 
 EMPILHA_TS : { ts.push_back( map< string, Simbolo >{} ); } 
            ;
 
 LISTA_ARGs : ARGs
-           | { $$.clear(); }
+        | { ts.push_back( map< string, Simbolo >{} ); 
+              $$.clear(); }
            ;
              
 ARGs : ARGs ',' E
@@ -157,14 +160,14 @@ ARGs : ARGs ',' E
          $$.contador = 1; }
      ;
 CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); in_func = 1; } 
-             '(' EMPILHA_TS LISTA_PARAMs ')' '{' CMDs '}'
+             '(' LISTA_PARAMs ')' '{' CMDs '}'
            { 
              string lbl_endereco_funcao = gera_label( "func_" + $2.c[0] );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
              
              $$.c = $2.c + "&" + $2.c + "{}"  + "=" + "'&funcao'" +
                     lbl_endereco_funcao + "[=]" + "^";
-             funcoes = funcoes + definicao_lbl_endereco_funcao + $6.c + $9.c +
+             funcoes = funcoes + definicao_lbl_endereco_funcao + $5.c + $8.c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
              in_func = 0;
@@ -177,6 +180,7 @@ LISTA_PARAMs : PARAMs
 
 PARAMs : PARAMs ',' PARAM  
        { // Cria var local
+         declara_var( Let, $3.c[0], $3.linha, $3.coluna ); 
          $$.c = $1.c + $3.c + "&" + $3.c + "arguments" + "@" + to_string( $1.contador )
                 + "[@]" + "=" + "^"; 
                 
@@ -193,7 +197,9 @@ PARAMs : PARAMs ',' PARAM
          $$.contador = $1.contador + $3.contador; 
        }
      | PARAM 
-       { // a & a arguments @ 0 [@] = ^ 
+       { // a & a arguments @ 0 [@] = ^
+         ts.push_back( map< string, Simbolo >{} ); 
+         declara_var( Let, $1.c[0], $1.linha, $1.coluna ); 
          $$.c = $1.c + "&" + $1.c + "arguments" + "@" + "0" + "[@]" + "=" + "^"; 
                 
          if( $1.valor_default.size() > 0 ) {
@@ -213,14 +219,12 @@ PARAM : ID
       { $$.c = $1.c;      
         $$.contador = 1;
         $$.valor_default.clear();
-        declara_var( Let, $1.c[0], $1.linha, $1.coluna ); 
       }
     | ID '=' E
       { // Código do IF
         $$.c = $1.c;
         $$.contador = 1;
         $$.valor_default = $3.c;         
-        declara_var( Let, $1.c[0], $1.linha, $1.coluna ); 
       }
     ;
 CMD_FOR : FOR '(' PRIM_E ';' E ';' E ')' CMD 
@@ -324,7 +328,7 @@ CMD_IF : IF '(' E ')' CMD ELSE CMD
         } 
        ;
        
-LVALUEPROP : E '[' E ']' { $$.c = $1.c+ $3.c; } 
+LVALUEPROP : E '[' E ']' { $$.c = $1.c + $3.c; } 
            | E '.' ID  { $$.c = $1.c+ $3.c; } 
            ;
 
@@ -333,6 +337,10 @@ E :
     { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | LVALUEPROP '=' E
     { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+  | ID  '=' '{' '}'
+    { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+  | LVALUEPROP '=' '{' '}'
+      { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | ID MAIS_IGUAL E 
     { $$.c = $1.c + $3.c + "+="; }
   | LVALUEPROP MAIS_IGUAL E
@@ -353,6 +361,8 @@ E :
     { $$.c = $1.c + $3.c + $2.c; }
   | E IGUAL E
     { $$.c = $1.c + $3.c + "=="; }
+  | E IGUAL '{' '}'
+    { $$.c = $1.c + $3.c + "{}"; }
   | E MAIS_MAIS
     { $$.c = $1.c + "++"; }
   | '-' E
@@ -364,7 +374,6 @@ E :
   | CDOUBLE
   | CINT
   | BOOLEAN
-  | '{' '}'
   | CSTRING
   | ID 
     { checa_simbolo( $1.c[0], false ); $$.c = $1.c + "@"; } 
@@ -382,7 +391,6 @@ E :
 #include "lex.yy.c"
 vector<string> declara_var( TipoDecl tipo, string nome, int linha, int coluna ) {
   auto& topo = ts.back();    
-       
   if( topo.count( nome ) == 0 ) {
     topo[nome] = Simbolo{ tipo, linha, coluna };
     vector<string> returnVector;
