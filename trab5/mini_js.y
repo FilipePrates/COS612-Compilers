@@ -100,13 +100,13 @@ void print( vector<string> codigo ) {
 }
 %}
 
-%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT FECHA_PARENTESES_FUNC
+%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT FECHA_PARENTESES_FUNC SETA
 %token CDOUBLE CSTRING CINT
 %token AND OR ME_IG MA_IG DIF IGUAL
 %token MAIS_IGUAL
 
-%right '=' MAIS_IGUAL FECHA_PARENTESES_FUNC
-%nonassoc '<' '>' IGUAL
+%right '=' MAIS_IGUAL FECHA_PARENTESES_FUNC SETA
+%nonassoc '<' '>' IGUAL 
 %left '+' '-' 
 %left '*' '/' '%'
 
@@ -132,8 +132,20 @@ CMD : CMD_FUNCTION
     | CMD_FOR
     | CMD_WHILE 
     | RETURN E ';'
-      { 
-        $$.c = $2.c + "'&retorno'" + "@" + "~";
+      { if (in_func) {
+        $$.c = $2.c + "'&retorno'" + "@" + "~"; 
+       }else{
+        cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
+        exit( 1 );    
+       }
+      }
+    | RETURN '{' KEYS_VALUE_PAIRS '}' ';'
+      { if (in_func){
+        $$.c = vector<string>{"{}"} + $3.c + "[<=]" + "'&retorno'" + "@" + "~";
+       }else{
+        cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
+        exit( 1 );    
+       }
       }
     | E ';'
       { $$.c = $1.c + "^"; };
@@ -143,10 +155,10 @@ CMD : CMD_FUNCTION
         $$.c = vector<string>{"<{"} + $3.c + vector<string>{"}>"}; }
     | E ASM ';' 	{ $$.c = $1.c + $2.c; }
     | ';' { $$.clear();}
-    ;
+    ; 
 
 
-EMPILHA_TS : { ts.push_back( map< string, Simbolo >{} ); } 
+EMPILHA_TS : { ts.push_back( map< string, Simbolo >{} );} 
            ;
 
 LISTA_ARGs : ARGs
@@ -165,16 +177,48 @@ ARGs : ARGs ',' E
 FUNCTION_ANON : FUNCTION { in_func = 1; } 
              '(' LISTA_PARAMs ')' '{' CMDs '}'
            { 
-             string lbl_endereco_funcao = gera_label( "func_" + $2.c[0] );
+             string lbl_endereco_funcao = gera_label( "func_anon" );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
              
-             $$.c = $2.c + "&" + $2.c + "{}"  + "=" + "'&funcao'" +
-                    lbl_endereco_funcao + "[=]" + "^";
-             funcoes = funcoes + definicao_lbl_endereco_funcao + $5.c + $8.c +
+             $$.c = vector<string>{"{}"} + "'&funcao'" +
+                    lbl_endereco_funcao + "[<=]";
+             funcoes = funcoes + definicao_lbl_endereco_funcao + $4.c + $7.c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
              in_func = 0;
            }
+         ;
+
+FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func = 1; } EMPILHA_TS SETA E
+           {
+             string lbl_endereco_funcao = gera_label( "func_seta" );
+             string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
+             
+             $$.c = vector<string>{"{}"} + "'&funcao'" +
+                    lbl_endereco_funcao + "[<=]";
+
+             funcoes = funcoes + definicao_lbl_endereco_funcao + 
+              $1.c + "&" + $1.c + "arguments" + "@" + "0" + "[@]" + "=" + "^" +
+              $5.c + "'&retorno'" + "@" + "~"; 
+
+            ts.pop_back();
+            in_func = 0;
+           }
+           | '(' LISTA_PARAMs { in_func = 1; } FECHA_PARENTESES_FUNC E
+           {
+             string lbl_endereco_funcao = gera_label( "func_seta" );
+             string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
+             
+             $$.c = vector<string>{"{}"} + "'&funcao'" +
+                    lbl_endereco_funcao + "[<=]";
+
+             funcoes = funcoes + definicao_lbl_endereco_funcao + 
+              $2.c + $5.c + "'&retorno'" + "@" + "~"; 
+
+            ts.pop_back();
+            in_func = 0; 
+           }
+         
          ;
 
 CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); in_func = 1; } 
@@ -193,7 +237,7 @@ CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); i
          ;
          
 LISTA_PARAMs : PARAMs
-           | { $$.clear(); }
+            | EMPILHA_TS { $$.clear(); }
            ;
 
 PARAMs : PARAMs ',' PARAM  
@@ -291,7 +335,7 @@ LET_VARs : LET_VAR ',' LET_VARs { $$.c = $1.c + $3.c; }
          ;
 
 LET_VAR : ID  
-          { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ); }
+          { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna );}
         | ID '=' E
           { 
             $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
@@ -368,35 +412,43 @@ LVALUEPROP : E '[' E ']' { $$.c = $1.c + $3.c; }
            | E '.' ID  { $$.c = $1.c+ $3.c; } 
            ;
 
-KEYS_VALUE_PAIRS : ID ':' E ',' KEYS_VALUE_PAIRS
-                  {$$.c =  $5.c + $1.c + $3.c + "[<=]"; }
-                 | ID ':' E 
+KEYS_VALUE_PAIRS : ID ':' E 
                   { $$.c = $1.c + $3.c + "[<=]";}
                  | ID ':' '{' '}'
                   { $$.c = $1.c + "{}" + "[<=]";}
                  | ID ':' '{' KEYS_VALUE_PAIRS '}' 
                   { $$.c = $1.c + "{}" + $4.c + "[<=]";}
+                 | ID ':' E ',' KEYS_VALUE_PAIRS
+                  {$$.c =  $5.c + $1.c + $3.c + "[<=]"; }
+                 | ID ':' '{' '}' ',' KEYS_VALUE_PAIRS
+                  {$$.c =  $5.c + $1.c + "{}" + "[<=]"; }
+                 | ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
+                  { $$.c = $5.c + $1.c + "{}" + $4.c + "[<=]";}
                  ;
 
 ARRAY_ELEMENTS :
-               E ',' ARRAY_ELEMENTS
-               { $$.c = vector<string>{} + to_string(arrayElCounter) + $1.c + "[<=]" + $3.c; arrayElCounter++;}
-               | E
+                E
                { $$.c = vector<string>{} + to_string(arrayElCounter) + $1.c + "[<=]"; arrayElCounter++;}
                | '{' '}'
                 { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
-               | '{' KEYS_VALUE_PAIRS '}' 
+               | '{' KEYS_VALUE_PAIRS '}'
                 { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + $2.c + "[<=]"; arrayElCounter++;}
+                | ARRAY_ELEMENTS ','  E 
+               { $$.c = $1.c + to_string(arrayElCounter) + $3.c + "[<=]"; arrayElCounter++;}
+               |  ARRAY_ELEMENTS  ',' '{' '}'
+                { $$.c = $1.c + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
+               |  ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}'
+                { $$.c = $1.c + to_string(arrayElCounter)  + "{}" + $4.c + "[<=]" + "[<=]"; arrayElCounter++;}
                ;
 E : 
   ID '=' E
-    { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | LVALUEPROP '=' E
-    { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | ID  '=' '{' '}'
-    { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | LVALUEPROP '=' '{' '}'
-      { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+      { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | ID MAIS_IGUAL E 
     { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | LVALUEPROP MAIS_IGUAL E
@@ -430,9 +482,9 @@ E :
   | BOOLEAN
   | CSTRING
   | ID 
-    { checa_simbolo( $1.c[0], false ); $$.c = $1.c + "@"; } 
+    { if (!in_func) checa_simbolo( $1.c[0], false ); $$.c = $1.c + "@"; } 
   | LVALUEPROP
-    { checa_simbolo( $1.c[0], false ); $$.c = $1.c + "[@]"; } 
+    { if (!in_func) checa_simbolo( $1.c[0], false ); $$.c = $1.c + "[@]"; } 
   | '(' E ')'
     { $$.c = $2.c; }
   | '[' ']'
@@ -440,6 +492,7 @@ E :
   | '[' ARRAY_ELEMENTS ']'
   { $$.c = vector<string>{} + "[]" + $2.c; arrayElCounter = 0;}
   | FUNCTION_ANON
+  | FUNCTION_SETA
   ;
   
   
@@ -447,7 +500,7 @@ E :
 
 #include "lex.yy.c"
 vector<string> declara_var( TipoDecl tipo, string nome, int linha, int coluna ) {
-  auto& topo = ts.back();    
+  auto& topo = ts.back(); 
   if( topo.count( nome ) == 0 ) {
     topo[nome] = Simbolo{ tipo, linha, coluna };
     vector<string> returnVector;

@@ -26,7 +26,7 @@ ID      {L}({L}|{D})*
 STRING	\"(\"\"|\\\"|[^\"])*\"
 STRING2	\'(\'\'|\\\'|[^\'])*\'
 BOOLEAN    "true"|"false" 
-
+CLOSE_PAR_FUNC ")"[\n\r\t" "]*=>
 %%
 
 "\t"       { coluna += 4; }
@@ -38,6 +38,7 @@ BOOLEAN    "true"|"false"
 {STRING}   { return token( CSTRING ); }
 {STRING2}  { return token( CSTRING ); }
 {BOOLEAN}  { return token( BOOLEAN ); }	
+{CLOSE_PAR_FUNC} { return token( FECHA_PARENTESES_FUNC );}
 
 	
 "&&"	   { return token( AND ); }
@@ -46,6 +47,8 @@ BOOLEAN    "true"|"false"
 ">="	   { return token( MA_IG ); }
 "!="	   { return token( DIF ); }
 "=="	   { return token( IGUAL ); }
+
+"=>"       { return token( SETA ); }
 
 "+="       { return token( MAIS_IGUAL ); }
 "++"       { return token( MAIS_MAIS ); }
@@ -59,7 +62,6 @@ BOOLEAN    "true"|"false"
 "while"    { return token( WHILE ); }
 "function" { return token( FUNCTION ); }
 "return"   { return token( RETURN );}
-")"\.*"=>" { return token( FECHA_PARENTESES_FUNC );}
 
 "asm{".*"}"  {  
                 vector<string> v;
@@ -86,6 +88,7 @@ int token( int tk ) {
       yylval.c = vector<string>{ yytext };
       coluna += strlen( yytext ); 
   }
+  cout << tk << endl;
   yylval.linha = linha;
   yylval.coluna = coluna;
 
