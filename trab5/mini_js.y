@@ -8,6 +8,8 @@ using namespace std;
 
 int linha = 1, coluna = 0; 
 
+int arrayElCounter = 0;
+
 struct Atributos {
   vector<string> c; // Código
 
@@ -159,6 +161,22 @@ ARGs : ARGs ',' E
        { $$.c = $1.c;
          $$.contador = 1; }
      ;
+
+FUNCTION_ANON : FUNCTION { in_func = 1; } 
+             '(' LISTA_PARAMs ')' '{' CMDs '}'
+           { 
+             string lbl_endereco_funcao = gera_label( "func_" + $2.c[0] );
+             string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
+             
+             $$.c = $2.c + "&" + $2.c + "{}"  + "=" + "'&funcao'" +
+                    lbl_endereco_funcao + "[=]" + "^";
+             funcoes = funcoes + definicao_lbl_endereco_funcao + $5.c + $8.c +
+                       "undefined" + "@" + "'&retorno'" + "@"+ "~";
+             ts.pop_back();
+             in_func = 0;
+           }
+         ;
+
 CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); in_func = 1; } 
              '(' LISTA_PARAMs ')' '{' CMDs '}'
            { 
@@ -278,6 +296,12 @@ LET_VAR : ID
           { 
             $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
                    $1.c + $3.c + "=" + "^"; }
+        | ID '=' '{' '}'
+            { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
+                     $1.c + "{}" + "=" + "^";}
+        | ID '=' '{' KEYS_VALUE_PAIRS '}'
+            { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
+            $1.c + "{}" + "=" + $4.c  + "^";}
         ;
   
 CMD_VAR : VAR VAR_VARs { $$.c = $2.c; }
@@ -292,6 +316,12 @@ VAR_VAR : ID
         | ID '=' E
           {  $$.c = declara_var( Var, $1.c[0], $1.linha, $1.coluna ) + 
                     $1.c + $3.c + "=" + "^"; }
+        | ID '=' '{' '}'
+            { $$.c = declara_var( Var, $1.c[0], $1.linha, $1.coluna ) + 
+                     $1.c + "{}" + "=" + "^";}
+        | ID '=' '{' KEYS_VALUE_PAIRS '}'
+            { $$.c = declara_var( Var, $1.c[0], $1.linha, $1.coluna ) + 
+            $1.c + "{}" + "=" + $4.c  + "^";}
         ;
   
 CMD_CONST: CONST CONST_VARs { $$.c = $2.c; }
@@ -304,6 +334,12 @@ CONST_VARs : CONST_VAR ',' CONST_VARs { $$.c = $1.c + $3.c; }
 CONST_VAR : ID '=' E
             { $$.c = declara_var( Const, $1.c[0], $1.linha, $1.coluna ) + 
                      $1.c + $3.c + "=" + "^";}
+          | ID '=' '{' '}'
+            { $$.c = declara_var( Const, $1.c[0], $1.linha, $1.coluna ) + 
+                     $1.c + "{}" + "=" + "^";}
+          | ID '=' '{' KEYS_VALUE_PAIRS '}'
+            { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
+            $1.c + "{}" + "=" + $4.c  + "^";}
           ;
 
 CMD_IF : IF '(' E ')' CMD ELSE CMD
@@ -332,6 +368,26 @@ LVALUEPROP : E '[' E ']' { $$.c = $1.c + $3.c; }
            | E '.' ID  { $$.c = $1.c+ $3.c; } 
            ;
 
+KEYS_VALUE_PAIRS : ID ':' E ',' KEYS_VALUE_PAIRS
+                  {$$.c =  $5.c + $1.c + $3.c + "[<=]"; }
+                 | ID ':' E 
+                  { $$.c = $1.c + $3.c + "[<=]";}
+                 | ID ':' '{' '}'
+                  { $$.c = $1.c + "{}" + "[<=]";}
+                 | ID ':' '{' KEYS_VALUE_PAIRS '}' 
+                  { $$.c = $1.c + "{}" + $4.c + "[<=]";}
+                 ;
+
+ARRAY_ELEMENTS :
+               E ',' ARRAY_ELEMENTS
+               { $$.c = vector<string>{} + to_string(arrayElCounter) + $1.c + "[<=]" + $3.c; arrayElCounter++;}
+               | E
+               { $$.c = vector<string>{} + to_string(arrayElCounter) + $1.c + "[<=]"; arrayElCounter++;}
+               | '{' '}'
+                { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
+               | '{' KEYS_VALUE_PAIRS '}' 
+                { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + $2.c + "[<=]"; arrayElCounter++;}
+               ;
 E : 
   ID '=' E
     { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
@@ -342,9 +398,9 @@ E :
   | LVALUEPROP '=' '{' '}'
       { checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | ID MAIS_IGUAL E 
-    { $$.c = $1.c + $3.c + "+="; }
+    { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | LVALUEPROP MAIS_IGUAL E
-    { $$.c = $1.c + $3.c + "+="; }
+    { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | E '<' E
     { $$.c = $1.c + $3.c + $2.c; }
   | E '>' E
@@ -361,10 +417,8 @@ E :
     { $$.c = $1.c + $3.c + $2.c; }
   | E IGUAL E
     { $$.c = $1.c + $3.c + "=="; }
-  | E IGUAL '{' '}'
-    { $$.c = $1.c + $3.c + "{}"; }
   | E MAIS_MAIS
-    { $$.c = $1.c + "++"; }
+    { $$.c = vector<string>{} + $1.c[0] + $1.c[0] + "@" + "1" + "+" + "="; }
   | '-' E
     { $$.c = "0" + $2.c + $1.c; } 
   | E '(' LISTA_ARGs ')'
@@ -383,6 +437,9 @@ E :
     { $$.c = $2.c; }
   | '[' ']'
     { $$.c = {"[]"}; }
+  | '[' ARRAY_ELEMENTS ']'
+  { $$.c = vector<string>{} + "[]" + $2.c; arrayElCounter = 0;}
+  | FUNCTION_ANON
   ;
   
   
