@@ -1597,7 +1597,7 @@ yyreduce:
 
   case 13: /* CMD: RETURN '{' KEYS_VALUE_PAIRS '}' ';'  */
 #line 143 "mini_js.y"
-      { if (in_func){
+      { if (in_func) {
         yyval.c = vector<string>{"{}"} + yyvsp[-2].c + "[<=]" + "'&retorno'" + "@" + "~";
        }else{
         cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
@@ -1677,7 +1677,7 @@ yyreduce:
              funcoes = funcoes + definicao_lbl_endereco_funcao + yyvsp[-4].c + yyvsp[-1].c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
-             in_func = 0;
+             in_func--;
            }
 #line 1683 "y.tab.c"
     break;
@@ -1702,7 +1702,7 @@ yyreduce:
               yyvsp[0].c + "'&retorno'" + "@" + "~"; 
 
             ts.pop_back();
-            in_func = 0;
+            in_func--;
            }
 #line 1708 "y.tab.c"
     break;
@@ -1726,7 +1726,7 @@ yyreduce:
               yyvsp[-3].c + yyvsp[0].c + "'&retorno'" + "@" + "~"; 
 
             ts.pop_back();
-            in_func = 0; 
+            in_func--; 
            }
 #line 1732 "y.tab.c"
     break;
@@ -1748,7 +1748,7 @@ yyreduce:
              funcoes = funcoes + definicao_lbl_endereco_funcao + yyvsp[-4].c + yyvsp[-1].c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
-             in_func = 0;
+             in_func--;
            }
 #line 1754 "y.tab.c"
     break;

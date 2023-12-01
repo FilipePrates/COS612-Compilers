@@ -140,7 +140,7 @@ CMD : CMD_FUNCTION
        }
       }
     | RETURN '{' KEYS_VALUE_PAIRS '}' ';'
-      { if (in_func){
+      { if (in_func) {
         $$.c = vector<string>{"{}"} + $3.c + "[<=]" + "'&retorno'" + "@" + "~";
        }else{
         cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
@@ -174,7 +174,7 @@ ARGs : ARGs ',' E
          $$.contador = 1; }
      ;
 
-FUNCTION_ANON : FUNCTION { in_func = 1; } 
+FUNCTION_ANON : FUNCTION { in_func++; } 
              '(' LISTA_PARAMs ')' '{' CMDs '}'
            { 
              string lbl_endereco_funcao = gera_label( "func_anon" );
@@ -185,11 +185,11 @@ FUNCTION_ANON : FUNCTION { in_func = 1; }
              funcoes = funcoes + definicao_lbl_endereco_funcao + $4.c + $7.c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
-             in_func = 0;
+             in_func--;
            }
          ;
 
-FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func = 1; } EMPILHA_TS SETA E
+FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func++; } EMPILHA_TS SETA E
            {
              string lbl_endereco_funcao = gera_label( "func_seta" );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
@@ -202,9 +202,9 @@ FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func =
               $5.c + "'&retorno'" + "@" + "~"; 
 
             ts.pop_back();
-            in_func = 0;
+            in_func--;
            }
-           | '(' LISTA_PARAMs { in_func = 1; } FECHA_PARENTESES_FUNC E
+           | '(' LISTA_PARAMs { in_func++; } FECHA_PARENTESES_FUNC E
            {
              string lbl_endereco_funcao = gera_label( "func_seta" );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
@@ -216,12 +216,12 @@ FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func =
               $2.c + $5.c + "'&retorno'" + "@" + "~"; 
 
             ts.pop_back();
-            in_func = 0; 
+            in_func--; 
            }
          
          ;
 
-CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); in_func = 1; } 
+CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); in_func++; } 
              '(' LISTA_PARAMs ')' '{' CMDs '}'
            { 
              string lbl_endereco_funcao = gera_label( "func_" + $2.c[0] );
@@ -232,7 +232,7 @@ CMD_FUNCTION : FUNCTION ID { declara_var( Var, $2.c[0], $2.linha, $2.coluna ); i
              funcoes = funcoes + definicao_lbl_endereco_funcao + $5.c + $8.c +
                        "undefined" + "@" + "'&retorno'" + "@"+ "~";
              ts.pop_back();
-             in_func = 0;
+             in_func--;
            }
          ;
          

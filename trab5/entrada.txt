@@ -1,5 +1,17 @@
-let a = x => y;
-{
-  a( 9 );
-  return 0;
+function log( msg ) {
+  msg asm{println # undefined};
+}
+
+function criaObj() {
+  return {  b: 'nome'};
+}
+
+let obj = [];
+let c;
+{ obj = criaObj();
+let c = [];
+
+log( obj );
+log( obj.a );
+log( obj.a[obj.a[1].teste+1] );
 }
