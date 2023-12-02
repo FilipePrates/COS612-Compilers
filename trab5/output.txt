@@ -1,1 +1,1 @@
-a & a {} '&funcao' 22 [<=] = ^ <{ 9 1 a @ $ ^ 0 '&retorno' @ ~ }> . x & x arguments @ 0 [@] = ^ y @ '&retorno' @ ~ 
+lol & lol {} = '&funcao' 21 [=] ^ c & obj & obj 0 lol @ $ = ^ . {} b 'nome' [<=] a [] 0 {} [<=] 1 {} teste 1 [<=] [<=] 2 c 24 8 * 1 + = [<=] [<=] '&retorno' @ ~ undefined @ '&retorno' @ ~ 

@@ -27,6 +27,8 @@ STRING	\"(\"\"|\\\"|[^\"])*\"
 STRING2	\'(\'\'|\\\'|[^\'])*\'
 BOOLEAN    "true"|"false" 
 CLOSE_PAR_FUNC ")"[\n\r\t" "]*=>
+OPEN_BRACKETS_FUNC "=>"[\n\r\t" "]*"{"
+
 %%
 
 "\t"       { coluna += 4; }
@@ -39,8 +41,7 @@ CLOSE_PAR_FUNC ")"[\n\r\t" "]*=>
 {STRING2}  { return token( CSTRING ); }
 {BOOLEAN}  { return token( BOOLEAN ); }	
 {CLOSE_PAR_FUNC} { return token( FECHA_PARENTESES_FUNC );}
-
-	
+{OPEN_BRACKETS_FUNC} { return token( OPEN_BRACKETS_FUNC );}
 "&&"	   { return token( AND ); }
 "||"	   { return token( OR ); }
 "<="	   { return token( ME_IG ); }
@@ -88,7 +89,7 @@ int token( int tk ) {
       yylval.c = vector<string>{ yytext };
       coluna += strlen( yytext ); 
   }
-  cout << tk << endl;
+//   cout << tk << endl;
   yylval.linha = linha;
   yylval.coluna = coluna;
 

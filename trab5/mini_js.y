@@ -100,15 +100,15 @@ void print( vector<string> codigo ) {
 }
 %}
 
-%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT FECHA_PARENTESES_FUNC SETA
+%token ID IF ELSE LET CONST VAR FOR FUNCTION WHILE ASM RETURN BOOLEAN OBJECT FECHA_PARENTESES_FUNC SETA OPEN_BRACKETS_FUNC
 %token CDOUBLE CSTRING CINT
 %token AND OR ME_IG MA_IG DIF IGUAL
 %token MAIS_IGUAL
 
-%right '=' MAIS_IGUAL FECHA_PARENTESES_FUNC SETA
+%right '=' MAIS_IGUAL FECHA_PARENTESES_FUNC SETA 
 %nonassoc '<' '>' IGUAL 
 %left '+' '-' 
-%left '*' '/' '%'
+%left '*' '/' '%' OPEN_BRACKETS_FUNC
 
 %left MAIS_MAIS
 %right '[' '(' ME_IG MA_IG
@@ -141,7 +141,7 @@ CMD : CMD_FUNCTION
       }
     | RETURN '{' KEYS_VALUE_PAIRS '}' ';'
       { if (in_func) {
-        $$.c = vector<string>{"{}"} + $3.c + "[<=]" + "'&retorno'" + "@" + "~";
+        $$.c = vector<string>{"{}"} + $3.c + "'&retorno'" + "@" + "~";  
        }else{
         cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
         exit( 1 );    
@@ -189,18 +189,34 @@ FUNCTION_ANON : FUNCTION { in_func++; }
            }
          ;
 
-FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func++; } EMPILHA_TS SETA E
+FUNCTION_SETA : ID { in_func++; ts.push_back( map< string, Simbolo >{} ); 
+            declara_var( Let, $1.c[0], $1.linha, $1.coluna );
+            $$.c = $1.c + "&" + $1.c + "arguments" + "@" + "0" + "[@]" + "=" + "^"; 
+          } SETA E
            {
              string lbl_endereco_funcao = gera_label( "func_seta" );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
              
-             $$.c = vector<string>{"{}"} + "'&funcao'" +
+            $$.c = vector<string>{"{}"} + "'&funcao'" +
                     lbl_endereco_funcao + "[<=]";
 
              funcoes = funcoes + definicao_lbl_endereco_funcao + 
-              $1.c + "&" + $1.c + "arguments" + "@" + "0" + "[@]" + "=" + "^" +
-              $5.c + "'&retorno'" + "@" + "~"; 
-
+              $2.c + $4.c + "'&retorno'" + "@" + "~";
+            ts.pop_back();
+            in_func--;
+           }
+           | ID { in_func++; ts.push_back( map< string, Simbolo >{} ); 
+            declara_var( Let, $1.c[0], $1.linha, $1.coluna );
+            $$.c = $1.c + "&" + $1.c + "arguments" + "@" + "0" + "[@]" + "=" + "^"; 
+          }  OPEN_BRACKETS_FUNC CMDs '}'
+           {
+             string lbl_endereco_funcao = gera_label( "func_seta" );
+             string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
+             
+            $$.c = vector<string>{"{}"} + "'&funcao'" +
+                    lbl_endereco_funcao + "[<=]";
+             funcoes = funcoes + definicao_lbl_endereco_funcao + 
+              $2.c + $4.c + "'&retorno'" + "@" + "~"; 
             ts.pop_back();
             in_func--;
            }
@@ -210,7 +226,7 @@ FUNCTION_SETA : ID { declara_var( Var, $1.c[0], $1.linha, $1.coluna ); in_func++
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
              
              $$.c = vector<string>{"{}"} + "'&funcao'" +
-                    lbl_endereco_funcao + "[<=]";
+                    lbl_endereco_funcao + "[<=]" + $2.c;
 
              funcoes = funcoes + definicao_lbl_endereco_funcao + 
               $2.c + $5.c + "'&retorno'" + "@" + "~"; 
@@ -245,7 +261,6 @@ PARAMs : PARAMs ',' PARAM
          declara_var( Let, $3.c[0], $3.linha, $3.coluna ); 
          $$.c = $1.c + $3.c + "&" + $3.c + "arguments" + "@" + to_string( $1.contador )
                 + "[@]" + "=" + "^"; 
-                
          if( $3.valor_default.size() > 0 ) {
           string lbl_true = gera_label( "lbl_true" );
           string lbl_fim_if = gera_label( "lbl_fim_if" );
@@ -346,6 +361,10 @@ LET_VAR : ID
         | ID '=' '{' KEYS_VALUE_PAIRS '}'
             { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
             $1.c + "{}" + "=" + $4.c  + "^";}
+        | ID '=' FUNCTION_SETA
+            { $$.c = declara_var( Let, $1.c[0], $1.linha, $1.coluna ) + 
+            $1.c + $3.c + "=" + "^";}
+
         ;
   
 CMD_VAR : VAR VAR_VARs { $$.c = $2.c; }
@@ -421,34 +440,37 @@ KEYS_VALUE_PAIRS : ID ':' E
                  | ID ':' E ',' KEYS_VALUE_PAIRS
                   {$$.c =  $5.c + $1.c + $3.c + "[<=]"; }
                  | ID ':' '{' '}' ',' KEYS_VALUE_PAIRS
-                  {$$.c =  $5.c + $1.c + "{}" + "[<=]"; }
+                  {$$.c =  $6.c + $1.c + "{}" + "[<=]"; }
                  | ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
-                  { $$.c = $5.c + $1.c + "{}" + $4.c + "[<=]";}
+                  { $$.c = $7.c + $1.c + "{}" + $4.c + "[<=]";}
                  ;
 
 ARRAY_ELEMENTS :
                 E
-               { $$.c = vector<string>{} + to_string(arrayElCounter) + $1.c + "[<=]"; arrayElCounter++;}
+               { $$.c = vector<string>{"[]"} + to_string(arrayElCounter) + $1.c + "[<=]"; arrayElCounter++;}
                | '{' '}'
-                { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
+                { $$.c = vector<string>{"[]"} + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
                | '{' KEYS_VALUE_PAIRS '}'
-                { $$.c = vector<string>{} + to_string(arrayElCounter) + "{}" + $2.c + "[<=]"; arrayElCounter++;}
+                { $$.c = vector<string>{"[]"} + to_string(arrayElCounter) + "{}" + $2.c + "[<=]"; arrayElCounter++;}
                 | ARRAY_ELEMENTS ','  E 
                { $$.c = $1.c + to_string(arrayElCounter) + $3.c + "[<=]"; arrayElCounter++;}
                |  ARRAY_ELEMENTS  ',' '{' '}'
                 { $$.c = $1.c + to_string(arrayElCounter) + "{}" + "[<=]"; arrayElCounter++;}
                |  ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}'
-                { $$.c = $1.c + to_string(arrayElCounter)  + "{}" + $4.c + "[<=]" + "[<=]"; arrayElCounter++;}
+                { $$.c = $1.c + to_string(arrayElCounter)  + "{}" + $4.c + "[<=]"; arrayElCounter++;}
                ;
-E : 
-  ID '=' E
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
-  | LVALUEPROP '=' E
+E : ID '=' E
     { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | ID  '=' '{' '}'
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "="; }
+  | ID '=' '{' KEYS_VALUE_PAIRS '}'
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "="; }
+  | LVALUEPROP '=' E
     { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
   | LVALUEPROP '=' '{' '}'
-      { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "="; }
+  | LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}'
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "="; }
   | ID MAIS_IGUAL E 
     { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | LVALUEPROP MAIS_IGUAL E
@@ -490,7 +512,7 @@ E :
   | '[' ']'
     { $$.c = {"[]"}; }
   | '[' ARRAY_ELEMENTS ']'
-  { $$.c = vector<string>{} + "[]" + $2.c; arrayElCounter = 0;}
+  { $$.c = $2.c; arrayElCounter = 0;}
   | FUNCTION_ANON
   | FUNCTION_SETA
   ;

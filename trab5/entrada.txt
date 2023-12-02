@@ -1,17 +1,6 @@
-function log( msg ) {
-  msg asm{println # undefined};
+function lol(){
+  return { a : [ {}, { teste: 1 }, c=24*8+1 ], b: 'nome'};
 }
 
-function criaObj() {
-  return {  b: 'nome'};
-}
-
-let obj = [];
 let c;
-{ obj = criaObj();
-let c = [];
-
-log( obj );
-log( obj.a );
-log( obj.a[obj.a[1].teste+1] );
-}
+let obj = lol();
