@@ -1,6 +1,2 @@
-function lol(){
-  return { a : [ {}, { teste: 1 }, c=24*8+1 ], b: 'nome'};
-}
-
-let c;
-let obj = lol();
+let b;
+(b={}).j = 0;

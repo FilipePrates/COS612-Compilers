@@ -1,0 +1,9 @@
+f & f {} '&funcao' 47 [<=] = ^
+b & b 9 1 f @ $ = ^ 
+c & c 7 1 b @ $ = ^ .
+<{
+y & y arguments @ 0 [@] = ^ x @ y @ * '&retorno' @ ~ 
+<{
+x & x arguments @ 0 [@] = ^ {} '&funcao' 30 [<=] '&retorno' @ ~ 
+}>
+}>

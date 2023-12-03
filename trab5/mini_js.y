@@ -141,7 +141,7 @@ CMD : CMD_FUNCTION
       }
     | RETURN '{' KEYS_VALUE_PAIRS '}' ';'
       { if (in_func) {
-        $$.c = vector<string>{"{}"} + $3.c + "'&retorno'" + "@" + "~";  
+        $$.c = vector<string>{"{}"} + $3.c + "'&retorno'" + "@" + "~";
        }else{
         cerr << "Erro: Não é permitido 'return' fora de funções." << endl;
         exit( 1 );    
@@ -466,15 +466,15 @@ E : ID '=' E
   | ID '=' '{' KEYS_VALUE_PAIRS '}'
     { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "="; }
   | LVALUEPROP '=' E
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "[<=]"; }
   | LVALUEPROP '=' '{' '}'
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "[<=]"; }
   | LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}'
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "[<=]"; }
   | ID MAIS_IGUAL E 
     { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | LVALUEPROP MAIS_IGUAL E
-    { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
+    { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "[<=]"; }
   | E '<' E
     { $$.c = $1.c + $3.c + $2.c; }
   | E '>' E
