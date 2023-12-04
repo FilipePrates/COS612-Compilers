@@ -226,7 +226,7 @@ FUNCTION_SETA : ID { in_func++; ts.push_back( map< string, Simbolo >{} );
              string definicao_lbl_endereco_funcao = ":" + lbl_endereco_funcao;
              
              $$.c = vector<string>{"{}"} + "'&funcao'" +
-                    lbl_endereco_funcao + "[<=]" + $2.c;
+                    lbl_endereco_funcao + "[<=]";
 
              funcoes = funcoes + definicao_lbl_endereco_funcao + 
               $2.c + $5.c + "'&retorno'" + "@" + "~"; 
@@ -464,17 +464,17 @@ E : ID '=' E
   | ID  '=' '{' '}'
     { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "="; }
   | ID '=' '{' KEYS_VALUE_PAIRS '}'
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "="; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "=" + $4.c; }
   | LVALUEPROP '=' E
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "[<=]"; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $3.c + "[<=]" + "^" + $3.c; }
   | LVALUEPROP '=' '{' '}'
     { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + "{}" + "[<=]"; }
   | LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}'
-    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c + $4.c + "[<=]"; }
+    { if (!in_func) checa_simbolo( $1.c[0], true );  $$.c = $1.c  + "{}" + $4.c + "[<=]" + "[<=]"; }
   | ID MAIS_IGUAL E 
     { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "="; }
   | LVALUEPROP MAIS_IGUAL E
-    { $$.c = $1.c + $1.c + "@" + $3.c + "+" + "[<=]"; }
+    { $$.c = $1.c + $1.c + "[@]" + $3.c + "+" + "[<=]"; }
   | E '<' E
     { $$.c = $1.c + $3.c + $2.c; }
   | E '>' E

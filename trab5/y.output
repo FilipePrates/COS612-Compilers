@@ -8,7 +8,8 @@ Terminals unused in grammar
     DIF
 
 
-State 170 conflicts: 1 shift/reduce
+State 141 conflicts: 2 reduce/reduce
+State 171 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -89,127 +90,128 @@ Grammar
    48        | ID '=' E
    49        | ID '=' '{' '}'
    50        | ID '=' '{' KEYS_VALUE_PAIRS '}'
+   51        | ID '=' FUNCTION_SETA
 
-   51 CMD_VAR: VAR VAR_VARs
+   52 CMD_VAR: VAR VAR_VARs
 
-   52 VAR_VARs: VAR_VAR ',' VAR_VARs
-   53         | VAR_VAR
+   53 VAR_VARs: VAR_VAR ',' VAR_VARs
+   54         | VAR_VAR
 
-   54 VAR_VAR: ID
-   55        | ID '=' E
-   56        | ID '=' '{' '}'
-   57        | ID '=' '{' KEYS_VALUE_PAIRS '}'
+   55 VAR_VAR: ID
+   56        | ID '=' E
+   57        | ID '=' '{' '}'
+   58        | ID '=' '{' KEYS_VALUE_PAIRS '}'
 
-   58 CMD_CONST: CONST CONST_VARs
+   59 CMD_CONST: CONST CONST_VARs
 
-   59 CONST_VARs: CONST_VAR ',' CONST_VARs
-   60           | CONST_VAR
+   60 CONST_VARs: CONST_VAR ',' CONST_VARs
+   61           | CONST_VAR
 
-   61 CONST_VAR: ID '=' E
-   62          | ID '=' '{' '}'
-   63          | ID '=' '{' KEYS_VALUE_PAIRS '}'
+   62 CONST_VAR: ID '=' E
+   63          | ID '=' '{' '}'
+   64          | ID '=' '{' KEYS_VALUE_PAIRS '}'
 
-   64 CMD_IF: IF '(' E ')' CMD ELSE CMD
-   65       | IF '(' E ')' CMD
+   65 CMD_IF: IF '(' E ')' CMD ELSE CMD
+   66       | IF '(' E ')' CMD
 
-   66 LVALUEPROP: E '[' E ']'
-   67           | E '.' ID
+   67 LVALUEPROP: E '[' E ']'
+   68           | E '.' ID
 
-   68 KEYS_VALUE_PAIRS: ID ':' E
-   69                 | ID ':' '{' '}'
-   70                 | ID ':' '{' KEYS_VALUE_PAIRS '}'
-   71                 | ID ':' E ',' KEYS_VALUE_PAIRS
-   72                 | ID ':' '{' '}' ',' KEYS_VALUE_PAIRS
-   73                 | ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
+   69 KEYS_VALUE_PAIRS: ID ':' E
+   70                 | ID ':' '{' '}'
+   71                 | ID ':' '{' KEYS_VALUE_PAIRS '}'
+   72                 | ID ':' E ',' KEYS_VALUE_PAIRS
+   73                 | ID ':' '{' '}' ',' KEYS_VALUE_PAIRS
+   74                 | ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
 
-   74 ARRAY_ELEMENTS: E
-   75               | '{' '}'
-   76               | '{' KEYS_VALUE_PAIRS '}'
-   77               | ARRAY_ELEMENTS ',' E
-   78               | ARRAY_ELEMENTS ',' '{' '}'
-   79               | ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}'
+   75 ARRAY_ELEMENTS: E
+   76               | '{' '}'
+   77               | '{' KEYS_VALUE_PAIRS '}'
+   78               | ARRAY_ELEMENTS ',' E
+   79               | ARRAY_ELEMENTS ',' '{' '}'
+   80               | ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}'
 
-   80 E: ID '=' E
-   81  | ID '=' '{' '}'
-   82  | ID '=' '{' KEYS_VALUE_PAIRS '}'
-   83  | LVALUEPROP '=' E
-   84  | LVALUEPROP '=' '{' '}'
-   85  | LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}'
-   86  | ID MAIS_IGUAL E
-   87  | LVALUEPROP MAIS_IGUAL E
-   88  | E '<' E
-   89  | E '>' E
-   90  | E '+' E
-   91  | E '-' E
-   92  | E '*' E
-   93  | E '/' E
-   94  | E '%' E
-   95  | E IGUAL E
-   96  | E MAIS_MAIS
-   97  | '-' E
-   98  | E '(' LISTA_ARGs ')'
-   99  | CDOUBLE
-  100  | CINT
-  101  | BOOLEAN
-  102  | CSTRING
-  103  | ID
-  104  | LVALUEPROP
-  105  | '(' E ')'
-  106  | '[' ']'
-  107  | '[' ARRAY_ELEMENTS ']'
-  108  | FUNCTION_ANON
-  109  | FUNCTION_SETA
+   81 E: ID '=' E
+   82  | ID '=' '{' '}'
+   83  | ID '=' '{' KEYS_VALUE_PAIRS '}'
+   84  | LVALUEPROP '=' E
+   85  | LVALUEPROP '=' '{' '}'
+   86  | LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}'
+   87  | ID MAIS_IGUAL E
+   88  | LVALUEPROP MAIS_IGUAL E
+   89  | E '<' E
+   90  | E '>' E
+   91  | E '+' E
+   92  | E '-' E
+   93  | E '*' E
+   94  | E '/' E
+   95  | E '%' E
+   96  | E IGUAL E
+   97  | E MAIS_MAIS
+   98  | '-' E
+   99  | E '(' LISTA_ARGs ')'
+  100  | CDOUBLE
+  101  | CINT
+  102  | BOOLEAN
+  103  | CSTRING
+  104  | ID
+  105  | LVALUEPROP
+  106  | '(' E ')'
+  107  | '[' ']'
+  108  | '[' ARRAY_ELEMENTS ']'
+  109  | FUNCTION_ANON
+  110  | FUNCTION_SETA
 
 
 Terminals, with rules where they appear
 
     $end (0) 0
-    '%' (37) 94
-    '(' (40) 23 29 31 38 39 64 65 98 105
-    ')' (41) 23 31 38 39 64 65 98 105
-    '*' (42) 92
-    '+' (43) 90
-    ',' (44) 20 34 45 52 59 71 72 73 77 78 79
-    '-' (45) 91 97
-    '.' (46) 67
-    '/' (47) 93
-    ':' (58) 68 69 70 71 72 73
+    '%' (37) 95
+    '(' (40) 23 29 31 38 39 65 66 99 106
+    ')' (41) 23 31 38 39 65 66 99 106
+    '*' (42) 93
+    '+' (43) 91
+    ',' (44) 20 34 45 53 60 72 73 74 78 79 80
+    '-' (45) 92 98
+    '.' (46) 68
+    '/' (47) 94
+    ':' (58) 69 70 71 72 73 74
     ';' (59) 5 6 7 11 12 13 15 16 38
-    '<' (60) 88
-    '=' (61) 37 48 49 50 55 56 57 61 62 63 80 81 82 83 84 85
-    '>' (62) 89
-    '[' (91) 66 106 107
-    ']' (93) 66 106 107
-    '{' (123) 12 14 23 31 49 50 56 57 62 63 69 70 72 73 75 76 78 79 81 82 84 85
-    '}' (125) 12 14 23 27 31 49 50 56 57 62 63 69 70 72 73 75 76 78 79 81 82 84 85
+    '<' (60) 89
+    '=' (61) 37 48 49 50 51 56 57 58 62 63 64 81 82 83 84 85 86
+    '>' (62) 90
+    '[' (91) 67 107 108
+    ']' (93) 67 107 108
+    '{' (123) 12 14 23 31 49 50 57 58 63 64 70 71 73 74 76 77 79 80 82 83 85 86
+    '}' (125) 12 14 23 27 31 49 50 57 58 63 64 70 71 73 74 76 77 79 80 82 83 85 86
     error (256)
-    ID (258) 25 27 31 36 37 47 48 49 50 54 55 56 57 61 62 63 67 68 69 70 71 72 73 80 81 82 86 103
-    IF (259) 64 65
-    ELSE (260) 64
+    ID (258) 25 27 31 36 37 47 48 49 50 51 55 56 57 58 62 63 64 68 69 70 71 72 73 74 81 82 83 87 104
+    IF (259) 65 66
+    ELSE (260) 65
     LET (261) 44
-    CONST (262) 58
-    VAR (263) 51
+    CONST (262) 59
+    VAR (263) 52
     FOR (264) 38
     FUNCTION (265) 23 31
     WHILE (266) 39
     ASM (267) 15
     RETURN (268) 11 12
-    BOOLEAN (269) 101
+    BOOLEAN (269) 102
     OBJECT (270)
     FECHA_PARENTESES_FUNC (271) 29
     SETA (272) 25
     OPEN_BRACKETS_FUNC (273) 27
-    CDOUBLE (274) 99
-    CSTRING (275) 102
-    CINT (276) 100
+    CDOUBLE (274) 100
+    CSTRING (275) 103
+    CINT (276) 101
     AND (277)
     OR (278)
     ME_IG (279)
     MA_IG (280)
     DIF (281)
-    IGUAL (282) 95
-    MAIS_IGUAL (283) 86 87
-    MAIS_MAIS (284) 96
+    IGUAL (282) 96
+    MAIS_IGUAL (283) 87 88
+    MAIS_MAIS (284) 97
 
 
 Nonterminals, with rules where they appear
@@ -224,25 +226,25 @@ Nonterminals, with rules where they appear
         on right: 1 2 14 23 27 31
     CMD (51)
         on left: 4 5 6 7 8 9 10 11 12 13 14 15 16
-        on right: 2 38 39 64 65
+        on right: 2 38 39 65 66
     EMPILHA_TS (52)
         on left: 17
         on right: 14 33
     LISTA_ARGs (53)
         on left: 18 19
-        on right: 98
+        on right: 99
     ARGs (54)
         on left: 20 21
         on right: 18 20
     FUNCTION_ANON (55)
         on left: 23
-        on right: 108
+        on right: 109
     $@1 (56)
         on left: 22
         on right: 23
     FUNCTION_SETA (57)
         on left: 25 27 29
-        on right: 109
+        on right: 51 110
     @2 (58)
         on left: 24
         on right: 25
@@ -283,41 +285,41 @@ Nonterminals, with rules where they appear
         on left: 45 46
         on right: 44 45
     LET_VAR (71)
-        on left: 47 48 49 50
+        on left: 47 48 49 50 51
         on right: 45 46
     CMD_VAR (72)
-        on left: 51
+        on left: 52
         on right: 6 41
     VAR_VARs (73)
-        on left: 52 53
-        on right: 51 52
-    VAR_VAR (74)
-        on left: 54 55 56 57
+        on left: 53 54
         on right: 52 53
+    VAR_VAR (74)
+        on left: 55 56 57 58
+        on right: 53 54
     CMD_CONST (75)
-        on left: 58
+        on left: 59
         on right: 7 42
     CONST_VARs (76)
-        on left: 59 60
-        on right: 58 59
-    CONST_VAR (77)
-        on left: 61 62 63
+        on left: 60 61
         on right: 59 60
+    CONST_VAR (77)
+        on left: 62 63 64
+        on right: 60 61
     CMD_IF (78)
-        on left: 64 65
+        on left: 65 66
         on right: 8
     LVALUEPROP (79)
-        on left: 66 67
-        on right: 83 84 85 87 104
+        on left: 67 68
+        on right: 84 85 86 88 105
     KEYS_VALUE_PAIRS (80)
-        on left: 68 69 70 71 72 73
-        on right: 12 50 57 63 70 71 72 73 76 79 82 85
+        on left: 69 70 71 72 73 74
+        on right: 12 50 58 64 71 72 73 74 77 80 83 86
     ARRAY_ELEMENTS (81)
-        on left: 74 75 76 77 78 79
-        on right: 77 78 79 107
+        on left: 75 76 77 78 79 80
+        on right: 78 79 80 108
     E (82)
-        on left: 80 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109
-        on right: 11 13 15 20 21 25 29 37 38 39 43 48 55 61 64 65 66 67 68 71 74 77 80 83 86 87 88 89 90 91 92 93 94 95 96 97 98 105
+        on left: 81 82 83 84 85 86 87 88 89 90 91 92 93 94 95 96 97 98 99 100 101 102 103 104 105 106 107 108 109 110
+        on right: 11 13 15 20 21 25 29 37 38 39 43 48 56 62 65 66 67 68 69 72 75 78 81 84 87 88 89 90 91 92 93 94 95 96 97 98 99 106
 
 
 State 0
@@ -388,18 +390,18 @@ State 4
 
    25 FUNCTION_SETA: ID • @2 SETA E
    27              | ID • @3 OPEN_BRACKETS_FUNC CMDs '}'
-   80 E: ID • '=' E
-   81  | ID • '=' '{' '}'
-   82  | ID • '=' '{' KEYS_VALUE_PAIRS '}'
-   86  | ID • MAIS_IGUAL E
-  103  | ID •
+   81 E: ID • '=' E
+   82  | ID • '=' '{' '}'
+   83  | ID • '=' '{' KEYS_VALUE_PAIRS '}'
+   87  | ID • MAIS_IGUAL E
+  104  | ID •
 
     MAIS_IGUAL  shift, and go to state 34
     '='         shift, and go to state 35
 
     SETA                reduce using rule 24 (@2)
     OPEN_BRACKETS_FUNC  reduce using rule 26 (@3)
-    $default            reduce using rule 103 (E)
+    $default            reduce using rule 104 (E)
 
     @2  go to state 36
     @3  go to state 37
@@ -407,8 +409,8 @@ State 4
 
 State 5
 
-   64 CMD_IF: IF • '(' E ')' CMD ELSE CMD
-   65       | IF • '(' E ')' CMD
+   65 CMD_IF: IF • '(' E ')' CMD ELSE CMD
+   66       | IF • '(' E ')' CMD
 
     '('  shift, and go to state 38
 
@@ -425,7 +427,7 @@ State 6
 
 State 7
 
-   58 CMD_CONST: CONST • CONST_VARs
+   59 CMD_CONST: CONST • CONST_VARs
 
     ID  shift, and go to state 42
 
@@ -435,7 +437,7 @@ State 7
 
 State 8
 
-   51 CMD_VAR: VAR • VAR_VARs
+   52 CMD_VAR: VAR • VAR_VARs
 
     ID  shift, and go to state 45
 
@@ -493,35 +495,35 @@ State 12
 
 State 13
 
-  101 E: BOOLEAN •
-
-    $default  reduce using rule 101 (E)
-
-
-State 14
-
-   99 E: CDOUBLE •
-
-    $default  reduce using rule 99 (E)
-
-
-State 15
-
-  102 E: CSTRING •
+  102 E: BOOLEAN •
 
     $default  reduce using rule 102 (E)
 
 
-State 16
+State 14
 
-  100 E: CINT •
+  100 E: CDOUBLE •
 
     $default  reduce using rule 100 (E)
 
 
+State 15
+
+  103 E: CSTRING •
+
+    $default  reduce using rule 103 (E)
+
+
+State 16
+
+  101 E: CINT •
+
+    $default  reduce using rule 101 (E)
+
+
 State 17
 
-   97 E: '-' • E
+   98 E: '-' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -541,8 +543,8 @@ State 17
 
 State 18
 
-  106 E: '[' • ']'
-  107  | '[' • ARRAY_ELEMENTS ']'
+  107 E: '[' • ']'
+  108  | '[' • ARRAY_ELEMENTS ']'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -566,7 +568,7 @@ State 18
 State 19
 
    29 FUNCTION_SETA: '(' • LISTA_PARAMs $@4 FECHA_PARENTESES_FUNC E
-  105 E: '(' • E ')'
+  106 E: '(' • E ')'
 
     ID        shift, and go to state 60
     FUNCTION  shift, and go to state 52
@@ -615,16 +617,16 @@ State 22
 
 State 23
 
-  108 E: FUNCTION_ANON •
+  109 E: FUNCTION_ANON •
 
-    $default  reduce using rule 108 (E)
+    $default  reduce using rule 109 (E)
 
 
 State 24
 
-  109 E: FUNCTION_SETA •
+  110 E: FUNCTION_SETA •
 
-    $default  reduce using rule 109 (E)
+    $default  reduce using rule 110 (E)
 
 
 State 25
@@ -678,34 +680,34 @@ State 31
 
 State 32
 
-   83 E: LVALUEPROP • '=' E
-   84  | LVALUEPROP • '=' '{' '}'
-   85  | LVALUEPROP • '=' '{' KEYS_VALUE_PAIRS '}'
-   87  | LVALUEPROP • MAIS_IGUAL E
-  104  | LVALUEPROP •
+   84 E: LVALUEPROP • '=' E
+   85  | LVALUEPROP • '=' '{' '}'
+   86  | LVALUEPROP • '=' '{' KEYS_VALUE_PAIRS '}'
+   88  | LVALUEPROP • MAIS_IGUAL E
+  105  | LVALUEPROP •
 
     MAIS_IGUAL  shift, and go to state 70
     '='         shift, and go to state 71
 
-    $default  reduce using rule 104 (E)
+    $default  reduce using rule 105 (E)
 
 
 State 33
 
    13 CMD: E • ';'
    15    | E • ASM ';'
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     ASM        shift, and go to state 72
     IGUAL      shift, and go to state 73
@@ -725,7 +727,7 @@ State 33
 
 State 34
 
-   86 E: ID MAIS_IGUAL • E
+   87 E: ID MAIS_IGUAL • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -745,9 +747,9 @@ State 34
 
 State 35
 
-   80 E: ID '=' • E
-   81  | ID '=' • '{' '}'
-   82  | ID '=' • '{' KEYS_VALUE_PAIRS '}'
+   81 E: ID '=' • E
+   82  | ID '=' • '{' '}'
+   83  | ID '=' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -782,8 +784,8 @@ State 37
 
 State 38
 
-   64 CMD_IF: IF '(' • E ')' CMD ELSE CMD
-   65       | IF '(' • E ')' CMD
+   65 CMD_IF: IF '(' • E ')' CMD ELSE CMD
+   66       | IF '(' • E ')' CMD
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -807,6 +809,7 @@ State 39
    48        | ID • '=' E
    49        | ID • '=' '{' '}'
    50        | ID • '=' '{' KEYS_VALUE_PAIRS '}'
+   51        | ID • '=' FUNCTION_SETA
 
     '='  shift, and go to state 92
 
@@ -832,57 +835,57 @@ State 41
 
 State 42
 
-   61 CONST_VAR: ID • '=' E
-   62          | ID • '=' '{' '}'
-   63          | ID • '=' '{' KEYS_VALUE_PAIRS '}'
+   62 CONST_VAR: ID • '=' E
+   63          | ID • '=' '{' '}'
+   64          | ID • '=' '{' KEYS_VALUE_PAIRS '}'
 
     '='  shift, and go to state 94
 
 
 State 43
 
-   58 CMD_CONST: CONST CONST_VARs •
+   59 CMD_CONST: CONST CONST_VARs •
 
-    $default  reduce using rule 58 (CMD_CONST)
+    $default  reduce using rule 59 (CMD_CONST)
 
 
 State 44
 
-   59 CONST_VARs: CONST_VAR • ',' CONST_VARs
-   60           | CONST_VAR •
+   60 CONST_VARs: CONST_VAR • ',' CONST_VARs
+   61           | CONST_VAR •
 
     ','  shift, and go to state 95
 
-    $default  reduce using rule 60 (CONST_VARs)
+    $default  reduce using rule 61 (CONST_VARs)
 
 
 State 45
 
-   54 VAR_VAR: ID •
-   55        | ID • '=' E
-   56        | ID • '=' '{' '}'
-   57        | ID • '=' '{' KEYS_VALUE_PAIRS '}'
+   55 VAR_VAR: ID •
+   56        | ID • '=' E
+   57        | ID • '=' '{' '}'
+   58        | ID • '=' '{' KEYS_VALUE_PAIRS '}'
 
     '='  shift, and go to state 96
 
-    $default  reduce using rule 54 (VAR_VAR)
+    $default  reduce using rule 55 (VAR_VAR)
 
 
 State 46
 
-   51 CMD_VAR: VAR VAR_VARs •
+   52 CMD_VAR: VAR VAR_VARs •
 
-    $default  reduce using rule 51 (CMD_VAR)
+    $default  reduce using rule 52 (CMD_VAR)
 
 
 State 47
 
-   52 VAR_VARs: VAR_VAR • ',' VAR_VARs
-   53         | VAR_VAR •
+   53 VAR_VARs: VAR_VAR • ',' VAR_VARs
+   54         | VAR_VAR •
 
     ','  shift, and go to state 97
 
-    $default  reduce using rule 53 (VAR_VARs)
+    $default  reduce using rule 54 (VAR_VARs)
 
 
 State 48
@@ -969,18 +972,18 @@ State 53
 State 54
 
    11 CMD: RETURN E • ';'
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -999,19 +1002,19 @@ State 54
 
 State 55
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   97  | '-' E •
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   98  | '-' E •
+   99  | E • '(' LISTA_ARGs ')'
 
     '*'        shift, and go to state 78
     '/'        shift, and go to state 79
@@ -1021,13 +1024,13 @@ State 55
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 97 (E)
+    $default  reduce using rule 98 (E)
 
 
 State 56
 
-   75 ARRAY_ELEMENTS: '{' • '}'
-   76               | '{' • KEYS_VALUE_PAIRS '}'
+   76 ARRAY_ELEMENTS: '{' • '}'
+   77               | '{' • KEYS_VALUE_PAIRS '}'
 
     ID   shift, and go to state 106
     '}'  shift, and go to state 109
@@ -1037,17 +1040,17 @@ State 56
 
 State 57
 
-  106 E: '[' ']' •
+  107 E: '[' ']' •
 
-    $default  reduce using rule 106 (E)
+    $default  reduce using rule 107 (E)
 
 
 State 58
 
-   77 ARRAY_ELEMENTS: ARRAY_ELEMENTS • ',' E
-   78               | ARRAY_ELEMENTS • ',' '{' '}'
-   79               | ARRAY_ELEMENTS • ',' '{' KEYS_VALUE_PAIRS '}'
-  107 E: '[' ARRAY_ELEMENTS • ']'
+   78 ARRAY_ELEMENTS: ARRAY_ELEMENTS • ',' E
+   79               | ARRAY_ELEMENTS • ',' '{' '}'
+   80               | ARRAY_ELEMENTS • ',' '{' KEYS_VALUE_PAIRS '}'
+  108 E: '[' ARRAY_ELEMENTS • ']'
 
     ','  shift, and go to state 111
     ']'  shift, and go to state 112
@@ -1055,19 +1058,19 @@ State 58
 
 State 59
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   74 ARRAY_ELEMENTS: E •
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   75 ARRAY_ELEMENTS: E •
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1082,7 +1085,7 @@ State 59
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 74 (ARRAY_ELEMENTS)
+    $default  reduce using rule 75 (ARRAY_ELEMENTS)
 
 
 State 60
@@ -1091,11 +1094,11 @@ State 60
    27              | ID • @3 OPEN_BRACKETS_FUNC CMDs '}'
    36 PARAM: ID •
    37      | ID • '=' E
-   80 E: ID • '=' E
-   81  | ID • '=' '{' '}'
-   82  | ID • '=' '{' KEYS_VALUE_PAIRS '}'
-   86  | ID • MAIS_IGUAL E
-  103  | ID •
+   81 E: ID • '=' E
+   82  | ID • '=' '{' '}'
+   83  | ID • '=' '{' KEYS_VALUE_PAIRS '}'
+   87  | ID • MAIS_IGUAL E
+  104  | ID •
 
     MAIS_IGUAL  shift, and go to state 34
     '='         shift, and go to state 113
@@ -1104,7 +1107,7 @@ State 60
     SETA                   reduce using rule 24 (@2)
     OPEN_BRACKETS_FUNC     reduce using rule 26 (@3)
     ','                    reduce using rule 36 (PARAM)
-    $default               reduce using rule 103 (E)
+    $default               reduce using rule 104 (E)
 
     @2  go to state 36
     @3  go to state 37
@@ -1145,19 +1148,19 @@ State 64
 
 State 65
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
-  105  | '(' E • ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
+  106  | '(' E • ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1206,7 +1209,7 @@ State 69
 
 State 70
 
-   87 E: LVALUEPROP MAIS_IGUAL • E
+   88 E: LVALUEPROP MAIS_IGUAL • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1226,9 +1229,9 @@ State 70
 
 State 71
 
-   83 E: LVALUEPROP '=' • E
-   84  | LVALUEPROP '=' • '{' '}'
-   85  | LVALUEPROP '=' • '{' KEYS_VALUE_PAIRS '}'
+   84 E: LVALUEPROP '=' • E
+   85  | LVALUEPROP '=' • '{' '}'
+   86  | LVALUEPROP '=' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1256,7 +1259,7 @@ State 72
 
 State 73
 
-   95 E: E IGUAL • E
+   96 E: E IGUAL • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1276,7 +1279,7 @@ State 73
 
 State 74
 
-   88 E: E '<' • E
+   89 E: E '<' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1296,7 +1299,7 @@ State 74
 
 State 75
 
-   89 E: E '>' • E
+   90 E: E '>' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1316,7 +1319,7 @@ State 75
 
 State 76
 
-   90 E: E '+' • E
+   91 E: E '+' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1336,7 +1339,7 @@ State 76
 
 State 77
 
-   91 E: E '-' • E
+   92 E: E '-' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1356,7 +1359,7 @@ State 77
 
 State 78
 
-   92 E: E '*' • E
+   93 E: E '*' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1376,7 +1379,7 @@ State 78
 
 State 79
 
-   93 E: E '/' • E
+   94 E: E '/' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1396,7 +1399,7 @@ State 79
 
 State 80
 
-   94 E: E '%' • E
+   95 E: E '%' • E
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1416,14 +1419,14 @@ State 80
 
 State 81
 
-   96 E: E MAIS_MAIS •
+   97 E: E MAIS_MAIS •
 
-    $default  reduce using rule 96 (E)
+    $default  reduce using rule 97 (E)
 
 
 State 82
 
-   66 LVALUEPROP: E '[' • E ']'
+   67 LVALUEPROP: E '[' • E ']'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1443,7 +1446,7 @@ State 82
 
 State 83
 
-   98 E: E '(' • LISTA_ARGs ')'
+   99 E: E '(' • LISTA_ARGs ')'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1467,7 +1470,7 @@ State 83
 
 State 84
 
-   67 LVALUEPROP: E '.' • ID
+   68 LVALUEPROP: E '.' • ID
 
     ID  shift, and go to state 134
 
@@ -1481,19 +1484,19 @@ State 85
 
 State 86
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   86 E: ID MAIS_IGUAL E •
-   88  | E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   87 E: ID MAIS_IGUAL E •
+   89  | E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1508,13 +1511,13 @@ State 86
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 86 (E)
+    $default  reduce using rule 87 (E)
 
 
 State 87
 
-   81 E: ID '=' '{' • '}'
-   82  | ID '=' '{' • KEYS_VALUE_PAIRS '}'
+   82 E: ID '=' '{' • '}'
+   83  | ID '=' '{' • KEYS_VALUE_PAIRS '}'
 
     ID   shift, and go to state 106
     '}'  shift, and go to state 135
@@ -1524,19 +1527,19 @@ State 87
 
 State 88
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   80 E: ID '=' E •
-   88  | E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   81 E: ID '=' E •
+   89  | E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1551,7 +1554,7 @@ State 88
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 80 (E)
+    $default  reduce using rule 81 (E)
 
 
 State 89
@@ -1585,20 +1588,20 @@ State 90
 
 State 91
 
-   64 CMD_IF: IF '(' E • ')' CMD ELSE CMD
-   65       | IF '(' E • ')' CMD
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   65 CMD_IF: IF '(' E • ')' CMD ELSE CMD
+   66       | IF '(' E • ')' CMD
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1620,6 +1623,7 @@ State 92
    48 LET_VAR: ID '=' • E
    49        | ID '=' • '{' '}'
    50        | ID '=' • '{' KEYS_VALUE_PAIRS '}'
+   51        | ID '=' • FUNCTION_SETA
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1633,9 +1637,9 @@ State 92
     '{'       shift, and go to state 140
 
     FUNCTION_ANON  go to state 23
-    FUNCTION_SETA  go to state 24
+    FUNCTION_SETA  go to state 141
     LVALUEPROP     go to state 32
-    E              go to state 141
+    E              go to state 142
 
 
 State 93
@@ -1644,15 +1648,15 @@ State 93
 
     ID  shift, and go to state 39
 
-    LET_VARs  go to state 142
+    LET_VARs  go to state 143
     LET_VAR   go to state 41
 
 
 State 94
 
-   61 CONST_VAR: ID '=' • E
-   62          | ID '=' • '{' '}'
-   63          | ID '=' • '{' KEYS_VALUE_PAIRS '}'
+   62 CONST_VAR: ID '=' • E
+   63          | ID '=' • '{' '}'
+   64          | ID '=' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1663,29 +1667,29 @@ State 94
     '-'       shift, and go to state 17
     '['       shift, and go to state 18
     '('       shift, and go to state 19
-    '{'       shift, and go to state 143
+    '{'       shift, and go to state 144
 
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 144
+    E              go to state 145
 
 
 State 95
 
-   59 CONST_VARs: CONST_VAR ',' • CONST_VARs
+   60 CONST_VARs: CONST_VAR ',' • CONST_VARs
 
     ID  shift, and go to state 42
 
-    CONST_VARs  go to state 145
+    CONST_VARs  go to state 146
     CONST_VAR   go to state 44
 
 
 State 96
 
-   55 VAR_VAR: ID '=' • E
-   56        | ID '=' • '{' '}'
-   57        | ID '=' • '{' KEYS_VALUE_PAIRS '}'
+   56 VAR_VAR: ID '=' • E
+   57        | ID '=' • '{' '}'
+   58        | ID '=' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1696,21 +1700,21 @@ State 96
     '-'       shift, and go to state 17
     '['       shift, and go to state 18
     '('       shift, and go to state 19
-    '{'       shift, and go to state 146
+    '{'       shift, and go to state 147
 
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 147
+    E              go to state 148
 
 
 State 97
 
-   52 VAR_VARs: VAR_VAR ',' • VAR_VARs
+   53 VAR_VARs: VAR_VAR ',' • VAR_VARs
 
     ID  shift, and go to state 45
 
-    VAR_VARs  go to state 148
+    VAR_VARs  go to state 149
     VAR_VAR   go to state 47
 
 
@@ -1718,7 +1722,7 @@ State 98
 
    38 CMD_FOR: FOR '(' PRIM_E • ';' E ';' E ')' CMD
 
-    ';'  shift, and go to state 149
+    ';'  shift, and go to state 150
 
 
 State 99
@@ -1745,18 +1749,18 @@ State 101
 State 102
 
    43 PRIM_E: E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1778,19 +1782,19 @@ State 103
 
    31 CMD_FUNCTION: FUNCTION ID $@5 • '(' LISTA_PARAMs ')' '{' CMDs '}'
 
-    '('  shift, and go to state 150
+    '('  shift, and go to state 151
 
 
 State 104
 
    23 FUNCTION_ANON: FUNCTION $@1 '(' • LISTA_PARAMs ')' '{' CMDs '}'
 
-    ID  shift, and go to state 151
+    ID  shift, and go to state 152
 
     $default  reduce using rule 17 (EMPILHA_TS)
 
     EMPILHA_TS    go to state 61
-    LISTA_PARAMs  go to state 152
+    LISTA_PARAMs  go to state 153
     PARAMs        go to state 63
     PARAM         go to state 64
 
@@ -1798,18 +1802,18 @@ State 104
 State 105
 
    39 CMD_WHILE: WHILE '(' E • ')' CMD
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -1823,26 +1827,26 @@ State 105
     '['        shift, and go to state 82
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
-    ')'        shift, and go to state 153
+    ')'        shift, and go to state 154
 
 
 State 106
 
-   68 KEYS_VALUE_PAIRS: ID • ':' E
-   69                 | ID • ':' '{' '}'
-   70                 | ID • ':' '{' KEYS_VALUE_PAIRS '}'
-   71                 | ID • ':' E ',' KEYS_VALUE_PAIRS
-   72                 | ID • ':' '{' '}' ',' KEYS_VALUE_PAIRS
-   73                 | ID • ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
+   69 KEYS_VALUE_PAIRS: ID • ':' E
+   70                 | ID • ':' '{' '}'
+   71                 | ID • ':' '{' KEYS_VALUE_PAIRS '}'
+   72                 | ID • ':' E ',' KEYS_VALUE_PAIRS
+   73                 | ID • ':' '{' '}' ',' KEYS_VALUE_PAIRS
+   74                 | ID • ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
 
-    ':'  shift, and go to state 154
+    ':'  shift, and go to state 155
 
 
 State 107
 
    12 CMD: RETURN '{' KEYS_VALUE_PAIRS • '}' ';'
 
-    '}'  shift, and go to state 155
+    '}'  shift, and go to state 156
 
 
 State 108
@@ -1854,23 +1858,23 @@ State 108
 
 State 109
 
-   75 ARRAY_ELEMENTS: '{' '}' •
+   76 ARRAY_ELEMENTS: '{' '}' •
 
-    $default  reduce using rule 75 (ARRAY_ELEMENTS)
+    $default  reduce using rule 76 (ARRAY_ELEMENTS)
 
 
 State 110
 
-   76 ARRAY_ELEMENTS: '{' KEYS_VALUE_PAIRS • '}'
+   77 ARRAY_ELEMENTS: '{' KEYS_VALUE_PAIRS • '}'
 
-    '}'  shift, and go to state 156
+    '}'  shift, and go to state 157
 
 
 State 111
 
-   77 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' • E
-   78               | ARRAY_ELEMENTS ',' • '{' '}'
-   79               | ARRAY_ELEMENTS ',' • '{' KEYS_VALUE_PAIRS '}'
+   78 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' • E
+   79               | ARRAY_ELEMENTS ',' • '{' '}'
+   80               | ARRAY_ELEMENTS ',' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1881,27 +1885,27 @@ State 111
     '-'       shift, and go to state 17
     '['       shift, and go to state 18
     '('       shift, and go to state 19
-    '{'       shift, and go to state 157
+    '{'       shift, and go to state 158
 
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 158
+    E              go to state 159
 
 
 State 112
 
-  107 E: '[' ARRAY_ELEMENTS ']' •
+  108 E: '[' ARRAY_ELEMENTS ']' •
 
-    $default  reduce using rule 107 (E)
+    $default  reduce using rule 108 (E)
 
 
 State 113
 
    37 PARAM: ID '=' • E
-   80 E: ID '=' • E
-   81  | ID '=' • '{' '}'
-   82  | ID '=' • '{' KEYS_VALUE_PAIRS '}'
+   81 E: ID '=' • E
+   82  | ID '=' • '{' '}'
+   83  | ID '=' • '{' KEYS_VALUE_PAIRS '}'
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -1917,30 +1921,30 @@ State 113
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 159
+    E              go to state 160
 
 
 State 114
 
    29 FUNCTION_SETA: '(' LISTA_PARAMs $@4 • FECHA_PARENTESES_FUNC E
 
-    FECHA_PARENTESES_FUNC  shift, and go to state 160
+    FECHA_PARENTESES_FUNC  shift, and go to state 161
 
 
 State 115
 
    34 PARAMs: PARAMs ',' • PARAM
 
-    ID  shift, and go to state 151
+    ID  shift, and go to state 152
 
-    PARAM  go to state 161
+    PARAM  go to state 162
 
 
 State 116
 
-  105 E: '(' E ')' •
+  106 E: '(' E ')' •
 
-    $default  reduce using rule 105 (E)
+    $default  reduce using rule 106 (E)
 
 
 State 117
@@ -1966,7 +1970,7 @@ State 117
     '('       shift, and go to state 19
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
-    '}'       shift, and go to state 162
+    '}'       shift, and go to state 163
 
     CMD            go to state 22
     FUNCTION_ANON  go to state 23
@@ -1984,19 +1988,19 @@ State 117
 
 State 118
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   87 E: LVALUEPROP MAIS_IGUAL E •
-   88  | E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   88 E: LVALUEPROP MAIS_IGUAL E •
+   89  | E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2011,35 +2015,35 @@ State 118
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 87 (E)
+    $default  reduce using rule 88 (E)
 
 
 State 119
 
-   84 E: LVALUEPROP '=' '{' • '}'
-   85  | LVALUEPROP '=' '{' • KEYS_VALUE_PAIRS '}'
+   85 E: LVALUEPROP '=' '{' • '}'
+   86  | LVALUEPROP '=' '{' • KEYS_VALUE_PAIRS '}'
 
     ID   shift, and go to state 106
-    '}'  shift, and go to state 163
+    '}'  shift, and go to state 164
 
-    KEYS_VALUE_PAIRS  go to state 164
+    KEYS_VALUE_PAIRS  go to state 165
 
 
 State 120
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   83 E: LVALUEPROP '=' E •
-   88  | E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   84 E: LVALUEPROP '=' E •
+   89  | E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2054,7 +2058,7 @@ State 120
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 83 (E)
+    $default  reduce using rule 84 (E)
 
 
 State 121
@@ -2066,19 +2070,19 @@ State 121
 
 State 122
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   95  | E IGUAL E •
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   96  | E IGUAL E •
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     '+'        shift, and go to state 76
     '-'        shift, and go to state 77
@@ -2094,57 +2098,24 @@ State 122
     '<'    error (nonassociative)
     '>'    error (nonassociative)
 
-    $default  reduce using rule 95 (E)
+    $default  reduce using rule 96 (E)
 
 
 State 123
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   88  | E '<' E •
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
-
-    '+'        shift, and go to state 76
-    '-'        shift, and go to state 77
-    '*'        shift, and go to state 78
-    '/'        shift, and go to state 79
-    '%'        shift, and go to state 80
-    MAIS_MAIS  shift, and go to state 81
-    '['        shift, and go to state 82
-    '('        shift, and go to state 83
-    '.'        shift, and go to state 84
-
-    IGUAL  error (nonassociative)
-    '<'    error (nonassociative)
-    '>'    error (nonassociative)
-
-    $default  reduce using rule 88 (E)
-
-
-State 124
-
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   89  | E '>' E •
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   89  | E '<' E •
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     '+'        shift, and go to state 76
     '-'        shift, and go to state 77
@@ -2163,22 +2134,24 @@ State 124
     $default  reduce using rule 89 (E)
 
 
-State 125
+State 124
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   90  | E '+' E •
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   90  | E '>' E •
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
+    '+'        shift, and go to state 76
+    '-'        shift, and go to state 77
     '*'        shift, and go to state 78
     '/'        shift, and go to state 79
     '%'        shift, and go to state 80
@@ -2187,24 +2160,28 @@ State 125
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
+    IGUAL  error (nonassociative)
+    '<'    error (nonassociative)
+    '>'    error (nonassociative)
+
     $default  reduce using rule 90 (E)
 
 
-State 126
+State 125
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   91  | E '-' E •
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   91  | E '+' E •
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     '*'        shift, and go to state 78
     '/'        shift, and go to state 79
@@ -2217,22 +2194,25 @@ State 126
     $default  reduce using rule 91 (E)
 
 
-State 127
+State 126
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   92  | E '*' E •
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   92  | E '-' E •
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
+    '*'        shift, and go to state 78
+    '/'        shift, and go to state 79
+    '%'        shift, and go to state 80
     MAIS_MAIS  shift, and go to state 81
     '['        shift, and go to state 82
     '('        shift, and go to state 83
@@ -2241,21 +2221,21 @@ State 127
     $default  reduce using rule 92 (E)
 
 
-State 128
+State 127
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   93  | E '/' E •
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   93  | E '*' E •
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     MAIS_MAIS  shift, and go to state 81
     '['        shift, and go to state 82
@@ -2265,21 +2245,21 @@ State 128
     $default  reduce using rule 93 (E)
 
 
-State 129
+State 128
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   94  | E '%' E •
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   94  | E '/' E •
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     MAIS_MAIS  shift, and go to state 81
     '['        shift, and go to state 82
@@ -2289,21 +2269,45 @@ State 129
     $default  reduce using rule 94 (E)
 
 
+State 129
+
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   95  | E '%' E •
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
+
+    MAIS_MAIS  shift, and go to state 81
+    '['        shift, and go to state 82
+    '('        shift, and go to state 83
+    '.'        shift, and go to state 84
+
+    $default  reduce using rule 95 (E)
+
+
 State 130
 
-   66 LVALUEPROP: E • '[' E ']'
-   66           | E '[' E • ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   67           | E '[' E • ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2317,14 +2321,14 @@ State 130
     '['        shift, and go to state 82
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
-    ']'        shift, and go to state 165
+    ']'        shift, and go to state 166
 
 
 State 131
 
-   98 E: E '(' LISTA_ARGs • ')'
+   99 E: E '(' LISTA_ARGs • ')'
 
-    ')'  shift, and go to state 166
+    ')'  shift, and go to state 167
 
 
 State 132
@@ -2332,7 +2336,7 @@ State 132
    18 LISTA_ARGs: ARGs •
    20 ARGs: ARGs • ',' E
 
-    ','  shift, and go to state 167
+    ','  shift, and go to state 168
 
     $default  reduce using rule 18 (LISTA_ARGs)
 
@@ -2340,18 +2344,18 @@ State 132
 State 133
 
    21 ARGs: E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2371,40 +2375,40 @@ State 133
 
 State 134
 
-   67 LVALUEPROP: E '.' ID •
+   68 LVALUEPROP: E '.' ID •
 
-    $default  reduce using rule 67 (LVALUEPROP)
+    $default  reduce using rule 68 (LVALUEPROP)
 
 
 State 135
 
-   81 E: ID '=' '{' '}' •
+   82 E: ID '=' '{' '}' •
 
-    $default  reduce using rule 81 (E)
+    $default  reduce using rule 82 (E)
 
 
 State 136
 
-   82 E: ID '=' '{' KEYS_VALUE_PAIRS • '}'
+   83 E: ID '=' '{' KEYS_VALUE_PAIRS • '}'
 
-    '}'  shift, and go to state 168
+    '}'  shift, and go to state 169
 
 
 State 137
 
    25 FUNCTION_SETA: ID @2 SETA E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2445,7 +2449,7 @@ State 138
     '('       shift, and go to state 19
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
-    '}'       shift, and go to state 169
+    '}'       shift, and go to state 170
 
     CMD            go to state 22
     FUNCTION_ANON  go to state 23
@@ -2463,8 +2467,8 @@ State 138
 
 State 139
 
-   64 CMD_IF: IF '(' E ')' • CMD ELSE CMD
-   65       | IF '(' E ')' • CMD
+   65 CMD_IF: IF '(' E ')' • CMD ELSE CMD
+   66       | IF '(' E ')' • CMD
 
     ID        shift, and go to state 4
     IF        shift, and go to state 5
@@ -2485,7 +2489,7 @@ State 139
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
 
-    CMD            go to state 170
+    CMD            go to state 171
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     CMD_FUNCTION   go to state 25
@@ -2505,26 +2509,38 @@ State 140
    50        | ID '=' '{' • KEYS_VALUE_PAIRS '}'
 
     ID   shift, and go to state 106
-    '}'  shift, and go to state 171
+    '}'  shift, and go to state 172
 
-    KEYS_VALUE_PAIRS  go to state 172
+    KEYS_VALUE_PAIRS  go to state 173
 
 
 State 141
 
+   51 LET_VAR: ID '=' FUNCTION_SETA •
+  110 E: FUNCTION_SETA •
+
+    ';'       reduce using rule 51 (LET_VAR)
+    ';'       [reduce using rule 110 (E)]
+    ','       reduce using rule 51 (LET_VAR)
+    ','       [reduce using rule 110 (E)]
+    $default  reduce using rule 110 (E)
+
+
+State 142
+
    48 LET_VAR: ID '=' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2542,89 +2558,39 @@ State 141
     $default  reduce using rule 48 (LET_VAR)
 
 
-State 142
+State 143
 
    45 LET_VARs: LET_VAR ',' LET_VARs •
 
     $default  reduce using rule 45 (LET_VARs)
 
 
-State 143
-
-   62 CONST_VAR: ID '=' '{' • '}'
-   63          | ID '=' '{' • KEYS_VALUE_PAIRS '}'
-
-    ID   shift, and go to state 106
-    '}'  shift, and go to state 173
-
-    KEYS_VALUE_PAIRS  go to state 174
-
-
 State 144
 
-   61 CONST_VAR: ID '=' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   63 CONST_VAR: ID '=' '{' • '}'
+   64          | ID '=' '{' • KEYS_VALUE_PAIRS '}'
 
-    IGUAL      shift, and go to state 73
-    '<'        shift, and go to state 74
-    '>'        shift, and go to state 75
-    '+'        shift, and go to state 76
-    '-'        shift, and go to state 77
-    '*'        shift, and go to state 78
-    '/'        shift, and go to state 79
-    '%'        shift, and go to state 80
-    MAIS_MAIS  shift, and go to state 81
-    '['        shift, and go to state 82
-    '('        shift, and go to state 83
-    '.'        shift, and go to state 84
+    ID   shift, and go to state 106
+    '}'  shift, and go to state 174
 
-    $default  reduce using rule 61 (CONST_VAR)
+    KEYS_VALUE_PAIRS  go to state 175
 
 
 State 145
 
-   59 CONST_VARs: CONST_VAR ',' CONST_VARs •
-
-    $default  reduce using rule 59 (CONST_VARs)
-
-
-State 146
-
-   56 VAR_VAR: ID '=' '{' • '}'
-   57        | ID '=' '{' • KEYS_VALUE_PAIRS '}'
-
-    ID   shift, and go to state 106
-    '}'  shift, and go to state 175
-
-    KEYS_VALUE_PAIRS  go to state 176
-
-
-State 147
-
-   55 VAR_VAR: ID '=' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   62 CONST_VAR: ID '=' E •
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2639,17 +2605,67 @@ State 147
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    $default  reduce using rule 55 (VAR_VAR)
+    $default  reduce using rule 62 (CONST_VAR)
+
+
+State 146
+
+   60 CONST_VARs: CONST_VAR ',' CONST_VARs •
+
+    $default  reduce using rule 60 (CONST_VARs)
+
+
+State 147
+
+   57 VAR_VAR: ID '=' '{' • '}'
+   58        | ID '=' '{' • KEYS_VALUE_PAIRS '}'
+
+    ID   shift, and go to state 106
+    '}'  shift, and go to state 176
+
+    KEYS_VALUE_PAIRS  go to state 177
 
 
 State 148
 
-   52 VAR_VARs: VAR_VAR ',' VAR_VARs •
+   56 VAR_VAR: ID '=' E •
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
-    $default  reduce using rule 52 (VAR_VARs)
+    IGUAL      shift, and go to state 73
+    '<'        shift, and go to state 74
+    '>'        shift, and go to state 75
+    '+'        shift, and go to state 76
+    '-'        shift, and go to state 77
+    '*'        shift, and go to state 78
+    '/'        shift, and go to state 79
+    '%'        shift, and go to state 80
+    MAIS_MAIS  shift, and go to state 81
+    '['        shift, and go to state 82
+    '('        shift, and go to state 83
+    '.'        shift, and go to state 84
+
+    $default  reduce using rule 56 (VAR_VAR)
 
 
 State 149
+
+   53 VAR_VARs: VAR_VAR ',' VAR_VARs •
+
+    $default  reduce using rule 53 (VAR_VARs)
+
+
+State 150
 
    38 CMD_FOR: FOR '(' PRIM_E ';' • E ';' E ')' CMD
 
@@ -2666,41 +2682,41 @@ State 149
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 177
-
-
-State 150
-
-   31 CMD_FUNCTION: FUNCTION ID $@5 '(' • LISTA_PARAMs ')' '{' CMDs '}'
-
-    ID  shift, and go to state 151
-
-    $default  reduce using rule 17 (EMPILHA_TS)
-
-    EMPILHA_TS    go to state 61
-    LISTA_PARAMs  go to state 178
-    PARAMs        go to state 63
-    PARAM         go to state 64
+    E              go to state 178
 
 
 State 151
 
-   36 PARAM: ID •
-   37      | ID • '=' E
+   31 CMD_FUNCTION: FUNCTION ID $@5 '(' • LISTA_PARAMs ')' '{' CMDs '}'
 
-    '='  shift, and go to state 179
+    ID  shift, and go to state 152
 
-    $default  reduce using rule 36 (PARAM)
+    $default  reduce using rule 17 (EMPILHA_TS)
+
+    EMPILHA_TS    go to state 61
+    LISTA_PARAMs  go to state 179
+    PARAMs        go to state 63
+    PARAM         go to state 64
 
 
 State 152
 
-   23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs • ')' '{' CMDs '}'
+   36 PARAM: ID •
+   37      | ID • '=' E
 
-    ')'  shift, and go to state 180
+    '='  shift, and go to state 180
+
+    $default  reduce using rule 36 (PARAM)
 
 
 State 153
+
+   23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs • ')' '{' CMDs '}'
+
+    ')'  shift, and go to state 181
+
+
+State 154
 
    39 CMD_WHILE: WHILE '(' E ')' • CMD
 
@@ -2723,7 +2739,7 @@ State 153
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
 
-    CMD            go to state 181
+    CMD            go to state 182
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     CMD_FUNCTION   go to state 25
@@ -2737,14 +2753,14 @@ State 153
     E              go to state 33
 
 
-State 154
+State 155
 
-   68 KEYS_VALUE_PAIRS: ID ':' • E
-   69                 | ID ':' • '{' '}'
-   70                 | ID ':' • '{' KEYS_VALUE_PAIRS '}'
-   71                 | ID ':' • E ',' KEYS_VALUE_PAIRS
-   72                 | ID ':' • '{' '}' ',' KEYS_VALUE_PAIRS
-   73                 | ID ':' • '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
+   69 KEYS_VALUE_PAIRS: ID ':' • E
+   70                 | ID ':' • '{' '}'
+   71                 | ID ':' • '{' KEYS_VALUE_PAIRS '}'
+   72                 | ID ':' • E ',' KEYS_VALUE_PAIRS
+   73                 | ID ':' • '{' '}' ',' KEYS_VALUE_PAIRS
+   74                 | ID ':' • '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
 
     ID        shift, and go to state 4
     FUNCTION  shift, and go to state 52
@@ -2755,87 +2771,54 @@ State 154
     '-'       shift, and go to state 17
     '['       shift, and go to state 18
     '('       shift, and go to state 19
-    '{'       shift, and go to state 182
+    '{'       shift, and go to state 183
 
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 183
-
-
-State 155
-
-   12 CMD: RETURN '{' KEYS_VALUE_PAIRS '}' • ';'
-
-    ';'  shift, and go to state 184
+    E              go to state 184
 
 
 State 156
 
-   76 ARRAY_ELEMENTS: '{' KEYS_VALUE_PAIRS '}' •
+   12 CMD: RETURN '{' KEYS_VALUE_PAIRS '}' • ';'
 
-    $default  reduce using rule 76 (ARRAY_ELEMENTS)
+    ';'  shift, and go to state 185
 
 
 State 157
 
-   78 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' • '}'
-   79               | ARRAY_ELEMENTS ',' '{' • KEYS_VALUE_PAIRS '}'
-
-    ID   shift, and go to state 106
-    '}'  shift, and go to state 185
-
-    KEYS_VALUE_PAIRS  go to state 186
-
-
-State 158
-
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   77 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' E •
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
-
-    IGUAL      shift, and go to state 73
-    '<'        shift, and go to state 74
-    '>'        shift, and go to state 75
-    '+'        shift, and go to state 76
-    '-'        shift, and go to state 77
-    '*'        shift, and go to state 78
-    '/'        shift, and go to state 79
-    '%'        shift, and go to state 80
-    MAIS_MAIS  shift, and go to state 81
-    '['        shift, and go to state 82
-    '('        shift, and go to state 83
-    '.'        shift, and go to state 84
+   77 ARRAY_ELEMENTS: '{' KEYS_VALUE_PAIRS '}' •
 
     $default  reduce using rule 77 (ARRAY_ELEMENTS)
 
 
+State 158
+
+   79 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' • '}'
+   80               | ARRAY_ELEMENTS ',' '{' • KEYS_VALUE_PAIRS '}'
+
+    ID   shift, and go to state 106
+    '}'  shift, and go to state 186
+
+    KEYS_VALUE_PAIRS  go to state 187
+
+
 State 159
 
-   37 PARAM: ID '=' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   80 E: ID '=' E •
-   88  | E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   78 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' E •
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -2850,11 +2833,44 @@ State 159
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
 
-    ')'       reduce using rule 80 (E)
-    $default  reduce using rule 37 (PARAM)
+    $default  reduce using rule 78 (ARRAY_ELEMENTS)
 
 
 State 160
+
+   37 PARAM: ID '=' E •
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   81 E: ID '=' E •
+   89  | E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
+
+    IGUAL      shift, and go to state 73
+    '<'        shift, and go to state 74
+    '>'        shift, and go to state 75
+    '+'        shift, and go to state 76
+    '-'        shift, and go to state 77
+    '*'        shift, and go to state 78
+    '/'        shift, and go to state 79
+    '%'        shift, and go to state 80
+    MAIS_MAIS  shift, and go to state 81
+    '['        shift, and go to state 82
+    '('        shift, and go to state 83
+    '.'        shift, and go to state 84
+
+    ')'       reduce using rule 81 (E)
+    $default  reduce using rule 37 (PARAM)
+
+
+State 161
 
    29 FUNCTION_SETA: '(' LISTA_PARAMs $@4 FECHA_PARENTESES_FUNC • E
 
@@ -2871,52 +2887,52 @@ State 160
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 187
+    E              go to state 188
 
 
-State 161
+State 162
 
    34 PARAMs: PARAMs ',' PARAM •
 
     $default  reduce using rule 34 (PARAMs)
 
 
-State 162
+State 163
 
    14 CMD: '{' EMPILHA_TS CMDs '}' •
 
     $default  reduce using rule 14 (CMD)
 
 
-State 163
-
-   84 E: LVALUEPROP '=' '{' '}' •
-
-    $default  reduce using rule 84 (E)
-
-
 State 164
 
-   85 E: LVALUEPROP '=' '{' KEYS_VALUE_PAIRS • '}'
+   85 E: LVALUEPROP '=' '{' '}' •
 
-    '}'  shift, and go to state 188
+    $default  reduce using rule 85 (E)
 
 
 State 165
 
-   66 LVALUEPROP: E '[' E ']' •
+   86 E: LVALUEPROP '=' '{' KEYS_VALUE_PAIRS • '}'
 
-    $default  reduce using rule 66 (LVALUEPROP)
+    '}'  shift, and go to state 189
 
 
 State 166
 
-   98 E: E '(' LISTA_ARGs ')' •
+   67 LVALUEPROP: E '[' E ']' •
 
-    $default  reduce using rule 98 (E)
+    $default  reduce using rule 67 (LVALUEPROP)
 
 
 State 167
+
+   99 E: E '(' LISTA_ARGs ')' •
+
+    $default  reduce using rule 99 (E)
+
+
+State 168
 
    20 ARGs: ARGs ',' • E
 
@@ -2933,91 +2949,91 @@ State 167
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 189
-
-
-State 168
-
-   82 E: ID '=' '{' KEYS_VALUE_PAIRS '}' •
-
-    $default  reduce using rule 82 (E)
+    E              go to state 190
 
 
 State 169
+
+   83 E: ID '=' '{' KEYS_VALUE_PAIRS '}' •
+
+    $default  reduce using rule 83 (E)
+
+
+State 170
 
    27 FUNCTION_SETA: ID @3 OPEN_BRACKETS_FUNC CMDs '}' •
 
     $default  reduce using rule 27 (FUNCTION_SETA)
 
 
-State 170
-
-   64 CMD_IF: IF '(' E ')' CMD • ELSE CMD
-   65       | IF '(' E ')' CMD •
-
-    ELSE  shift, and go to state 190
-
-    ELSE      [reduce using rule 65 (CMD_IF)]
-    $default  reduce using rule 65 (CMD_IF)
-
-
 State 171
+
+   65 CMD_IF: IF '(' E ')' CMD • ELSE CMD
+   66       | IF '(' E ')' CMD •
+
+    ELSE  shift, and go to state 191
+
+    ELSE      [reduce using rule 66 (CMD_IF)]
+    $default  reduce using rule 66 (CMD_IF)
+
+
+State 172
 
    49 LET_VAR: ID '=' '{' '}' •
 
     $default  reduce using rule 49 (LET_VAR)
 
 
-State 172
-
-   50 LET_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
-
-    '}'  shift, and go to state 191
-
-
 State 173
 
-   62 CONST_VAR: ID '=' '{' '}' •
-
-    $default  reduce using rule 62 (CONST_VAR)
-
-
-State 174
-
-   63 CONST_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
+   50 LET_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
 
     '}'  shift, and go to state 192
 
 
+State 174
+
+   63 CONST_VAR: ID '=' '{' '}' •
+
+    $default  reduce using rule 63 (CONST_VAR)
+
+
 State 175
 
-   56 VAR_VAR: ID '=' '{' '}' •
-
-    $default  reduce using rule 56 (VAR_VAR)
-
-
-State 176
-
-   57 VAR_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
+   64 CONST_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
 
     '}'  shift, and go to state 193
 
 
+State 176
+
+   57 VAR_VAR: ID '=' '{' '}' •
+
+    $default  reduce using rule 57 (VAR_VAR)
+
+
 State 177
 
+   58 VAR_VAR: ID '=' '{' KEYS_VALUE_PAIRS • '}'
+
+    '}'  shift, and go to state 194
+
+
+State 178
+
    38 CMD_FOR: FOR '(' PRIM_E ';' E • ';' E ')' CMD
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3031,17 +3047,17 @@ State 177
     '['        shift, and go to state 82
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
-    ';'        shift, and go to state 194
-
-
-State 178
-
-   31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs • ')' '{' CMDs '}'
-
-    ')'  shift, and go to state 195
+    ';'        shift, and go to state 195
 
 
 State 179
+
+   31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs • ')' '{' CMDs '}'
+
+    ')'  shift, and go to state 196
+
+
+State 180
 
    37 PARAM: ID '=' • E
 
@@ -3058,52 +3074,52 @@ State 179
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 196
-
-
-State 180
-
-   23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs ')' • '{' CMDs '}'
-
-    '{'  shift, and go to state 197
+    E              go to state 197
 
 
 State 181
+
+   23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs ')' • '{' CMDs '}'
+
+    '{'  shift, and go to state 198
+
+
+State 182
 
    39 CMD_WHILE: WHILE '(' E ')' CMD •
 
     $default  reduce using rule 39 (CMD_WHILE)
 
 
-State 182
-
-   69 KEYS_VALUE_PAIRS: ID ':' '{' • '}'
-   70                 | ID ':' '{' • KEYS_VALUE_PAIRS '}'
-   72                 | ID ':' '{' • '}' ',' KEYS_VALUE_PAIRS
-   73                 | ID ':' '{' • KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
-
-    ID   shift, and go to state 106
-    '}'  shift, and go to state 198
-
-    KEYS_VALUE_PAIRS  go to state 199
-
-
 State 183
 
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   68 KEYS_VALUE_PAIRS: ID ':' E •
-   71                 | ID ':' E • ',' KEYS_VALUE_PAIRS
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   70 KEYS_VALUE_PAIRS: ID ':' '{' • '}'
+   71                 | ID ':' '{' • KEYS_VALUE_PAIRS '}'
+   73                 | ID ':' '{' • '}' ',' KEYS_VALUE_PAIRS
+   74                 | ID ':' '{' • KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS
+
+    ID   shift, and go to state 106
+    '}'  shift, and go to state 199
+
+    KEYS_VALUE_PAIRS  go to state 200
+
+
+State 184
+
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   69 KEYS_VALUE_PAIRS: ID ':' E •
+   72                 | ID ':' E • ',' KEYS_VALUE_PAIRS
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3117,47 +3133,47 @@ State 183
     '['        shift, and go to state 82
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
-    ','        shift, and go to state 200
+    ','        shift, and go to state 201
 
-    $default  reduce using rule 68 (KEYS_VALUE_PAIRS)
+    $default  reduce using rule 69 (KEYS_VALUE_PAIRS)
 
 
-State 184
+State 185
 
    12 CMD: RETURN '{' KEYS_VALUE_PAIRS '}' ';' •
 
     $default  reduce using rule 12 (CMD)
 
 
-State 185
-
-   78 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' '}' •
-
-    $default  reduce using rule 78 (ARRAY_ELEMENTS)
-
-
 State 186
 
-   79 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS • '}'
+   79 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' '}' •
 
-    '}'  shift, and go to state 201
+    $default  reduce using rule 79 (ARRAY_ELEMENTS)
 
 
 State 187
 
+   80 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS • '}'
+
+    '}'  shift, and go to state 202
+
+
+State 188
+
    29 FUNCTION_SETA: '(' LISTA_PARAMs $@4 FECHA_PARENTESES_FUNC E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3175,28 +3191,28 @@ State 187
     $default  reduce using rule 29 (FUNCTION_SETA)
 
 
-State 188
-
-   85 E: LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}' •
-
-    $default  reduce using rule 85 (E)
-
-
 State 189
 
+   86 E: LVALUEPROP '=' '{' KEYS_VALUE_PAIRS '}' •
+
+    $default  reduce using rule 86 (E)
+
+
+State 190
+
    20 ARGs: ARGs ',' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3214,9 +3230,9 @@ State 189
     $default  reduce using rule 20 (ARGs)
 
 
-State 190
+State 191
 
-   64 CMD_IF: IF '(' E ')' CMD ELSE • CMD
+   65 CMD_IF: IF '(' E ')' CMD ELSE • CMD
 
     ID        shift, and go to state 4
     IF        shift, and go to state 5
@@ -3237,7 +3253,7 @@ State 190
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
 
-    CMD            go to state 202
+    CMD            go to state 203
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     CMD_FUNCTION   go to state 25
@@ -3251,28 +3267,28 @@ State 190
     E              go to state 33
 
 
-State 191
+State 192
 
    50 LET_VAR: ID '=' '{' KEYS_VALUE_PAIRS '}' •
 
     $default  reduce using rule 50 (LET_VAR)
 
 
-State 192
-
-   63 CONST_VAR: ID '=' '{' KEYS_VALUE_PAIRS '}' •
-
-    $default  reduce using rule 63 (CONST_VAR)
-
-
 State 193
 
-   57 VAR_VAR: ID '=' '{' KEYS_VALUE_PAIRS '}' •
+   64 CONST_VAR: ID '=' '{' KEYS_VALUE_PAIRS '}' •
 
-    $default  reduce using rule 57 (VAR_VAR)
+    $default  reduce using rule 64 (CONST_VAR)
 
 
 State 194
+
+   58 VAR_VAR: ID '=' '{' KEYS_VALUE_PAIRS '}' •
+
+    $default  reduce using rule 58 (VAR_VAR)
+
+
+State 195
 
    38 CMD_FOR: FOR '(' PRIM_E ';' E ';' • E ')' CMD
 
@@ -3289,31 +3305,31 @@ State 194
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     LVALUEPROP     go to state 32
-    E              go to state 203
-
-
-State 195
-
-   31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs ')' • '{' CMDs '}'
-
-    '{'  shift, and go to state 204
+    E              go to state 204
 
 
 State 196
 
+   31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs ')' • '{' CMDs '}'
+
+    '{'  shift, and go to state 205
+
+
+State 197
+
    37 PARAM: ID '=' E •
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3331,71 +3347,71 @@ State 196
     $default  reduce using rule 37 (PARAM)
 
 
-State 197
+State 198
 
    23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs ')' '{' • CMDs '}'
 
     $default  reduce using rule 3 (CMDs)
 
-    CMDs  go to state 205
-
-
-State 198
-
-   69 KEYS_VALUE_PAIRS: ID ':' '{' '}' •
-   72                 | ID ':' '{' '}' • ',' KEYS_VALUE_PAIRS
-
-    ','  shift, and go to state 206
-
-    $default  reduce using rule 69 (KEYS_VALUE_PAIRS)
+    CMDs  go to state 206
 
 
 State 199
 
-   70 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS • '}'
-   73                 | ID ':' '{' KEYS_VALUE_PAIRS • '}' ',' KEYS_VALUE_PAIRS
+   70 KEYS_VALUE_PAIRS: ID ':' '{' '}' •
+   73                 | ID ':' '{' '}' • ',' KEYS_VALUE_PAIRS
 
-    '}'  shift, and go to state 207
+    ','  shift, and go to state 207
+
+    $default  reduce using rule 70 (KEYS_VALUE_PAIRS)
 
 
 State 200
 
-   71 KEYS_VALUE_PAIRS: ID ':' E ',' • KEYS_VALUE_PAIRS
+   71 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS • '}'
+   74                 | ID ':' '{' KEYS_VALUE_PAIRS • '}' ',' KEYS_VALUE_PAIRS
 
-    ID  shift, and go to state 106
-
-    KEYS_VALUE_PAIRS  go to state 208
+    '}'  shift, and go to state 208
 
 
 State 201
 
-   79 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}' •
+   72 KEYS_VALUE_PAIRS: ID ':' E ',' • KEYS_VALUE_PAIRS
 
-    $default  reduce using rule 79 (ARRAY_ELEMENTS)
+    ID  shift, and go to state 106
+
+    KEYS_VALUE_PAIRS  go to state 209
 
 
 State 202
 
-   64 CMD_IF: IF '(' E ')' CMD ELSE CMD •
+   80 ARRAY_ELEMENTS: ARRAY_ELEMENTS ',' '{' KEYS_VALUE_PAIRS '}' •
 
-    $default  reduce using rule 64 (CMD_IF)
+    $default  reduce using rule 80 (ARRAY_ELEMENTS)
 
 
 State 203
 
+   65 CMD_IF: IF '(' E ')' CMD ELSE CMD •
+
+    $default  reduce using rule 65 (CMD_IF)
+
+
+State 204
+
    38 CMD_FOR: FOR '(' PRIM_E ';' E ';' E • ')' CMD
-   66 LVALUEPROP: E • '[' E ']'
-   67           | E • '.' ID
-   88 E: E • '<' E
-   89  | E • '>' E
-   90  | E • '+' E
-   91  | E • '-' E
-   92  | E • '*' E
-   93  | E • '/' E
-   94  | E • '%' E
-   95  | E • IGUAL E
-   96  | E • MAIS_MAIS
-   98  | E • '(' LISTA_ARGs ')'
+   67 LVALUEPROP: E • '[' E ']'
+   68           | E • '.' ID
+   89 E: E • '<' E
+   90  | E • '>' E
+   91  | E • '+' E
+   92  | E • '-' E
+   93  | E • '*' E
+   94  | E • '/' E
+   95  | E • '%' E
+   96  | E • IGUAL E
+   97  | E • MAIS_MAIS
+   99  | E • '(' LISTA_ARGs ')'
 
     IGUAL      shift, and go to state 73
     '<'        shift, and go to state 74
@@ -3409,19 +3425,19 @@ State 203
     '['        shift, and go to state 82
     '('        shift, and go to state 83
     '.'        shift, and go to state 84
-    ')'        shift, and go to state 209
+    ')'        shift, and go to state 210
 
 
-State 204
+State 205
 
    31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs ')' '{' • CMDs '}'
 
     $default  reduce using rule 3 (CMDs)
 
-    CMDs  go to state 210
+    CMDs  go to state 211
 
 
-State 205
+State 206
 
     2 CMDs: CMDs • CMD
    23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs ')' '{' CMDs • '}'
@@ -3444,7 +3460,7 @@ State 205
     '('       shift, and go to state 19
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
-    '}'       shift, and go to state 211
+    '}'       shift, and go to state 212
 
     CMD            go to state 22
     FUNCTION_ANON  go to state 23
@@ -3460,33 +3476,33 @@ State 205
     E              go to state 33
 
 
-State 206
+State 207
 
-   72 KEYS_VALUE_PAIRS: ID ':' '{' '}' ',' • KEYS_VALUE_PAIRS
+   73 KEYS_VALUE_PAIRS: ID ':' '{' '}' ',' • KEYS_VALUE_PAIRS
 
     ID  shift, and go to state 106
 
-    KEYS_VALUE_PAIRS  go to state 212
-
-
-State 207
-
-   70 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' •
-   73                 | ID ':' '{' KEYS_VALUE_PAIRS '}' • ',' KEYS_VALUE_PAIRS
-
-    ','  shift, and go to state 213
-
-    $default  reduce using rule 70 (KEYS_VALUE_PAIRS)
+    KEYS_VALUE_PAIRS  go to state 213
 
 
 State 208
 
-   71 KEYS_VALUE_PAIRS: ID ':' E ',' KEYS_VALUE_PAIRS •
+   71 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' •
+   74                 | ID ':' '{' KEYS_VALUE_PAIRS '}' • ',' KEYS_VALUE_PAIRS
+
+    ','  shift, and go to state 214
 
     $default  reduce using rule 71 (KEYS_VALUE_PAIRS)
 
 
 State 209
+
+   72 KEYS_VALUE_PAIRS: ID ':' E ',' KEYS_VALUE_PAIRS •
+
+    $default  reduce using rule 72 (KEYS_VALUE_PAIRS)
+
+
+State 210
 
    38 CMD_FOR: FOR '(' PRIM_E ';' E ';' E ')' • CMD
 
@@ -3509,7 +3525,7 @@ State 209
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
 
-    CMD            go to state 214
+    CMD            go to state 215
     FUNCTION_ANON  go to state 23
     FUNCTION_SETA  go to state 24
     CMD_FUNCTION   go to state 25
@@ -3523,7 +3539,7 @@ State 209
     E              go to state 33
 
 
-State 210
+State 211
 
     2 CMDs: CMDs • CMD
    31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs ')' '{' CMDs • '}'
@@ -3546,7 +3562,7 @@ State 210
     '('       shift, and go to state 19
     ';'       shift, and go to state 20
     '{'       shift, and go to state 21
-    '}'       shift, and go to state 215
+    '}'       shift, and go to state 216
 
     CMD            go to state 22
     FUNCTION_ANON  go to state 23
@@ -3562,45 +3578,45 @@ State 210
     E              go to state 33
 
 
-State 211
+State 212
 
    23 FUNCTION_ANON: FUNCTION $@1 '(' LISTA_PARAMs ')' '{' CMDs '}' •
 
     $default  reduce using rule 23 (FUNCTION_ANON)
 
 
-State 212
-
-   72 KEYS_VALUE_PAIRS: ID ':' '{' '}' ',' KEYS_VALUE_PAIRS •
-
-    $default  reduce using rule 72 (KEYS_VALUE_PAIRS)
-
-
 State 213
 
-   73 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' ',' • KEYS_VALUE_PAIRS
+   73 KEYS_VALUE_PAIRS: ID ':' '{' '}' ',' KEYS_VALUE_PAIRS •
 
-    ID  shift, and go to state 106
-
-    KEYS_VALUE_PAIRS  go to state 216
+    $default  reduce using rule 73 (KEYS_VALUE_PAIRS)
 
 
 State 214
+
+   74 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' ',' • KEYS_VALUE_PAIRS
+
+    ID  shift, and go to state 106
+
+    KEYS_VALUE_PAIRS  go to state 217
+
+
+State 215
 
    38 CMD_FOR: FOR '(' PRIM_E ';' E ';' E ')' CMD •
 
     $default  reduce using rule 38 (CMD_FOR)
 
 
-State 215
+State 216
 
    31 CMD_FUNCTION: FUNCTION ID $@5 '(' LISTA_PARAMs ')' '{' CMDs '}' •
 
     $default  reduce using rule 31 (CMD_FUNCTION)
 
 
-State 216
+State 217
 
-   73 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS •
+   74 KEYS_VALUE_PAIRS: ID ':' '{' KEYS_VALUE_PAIRS '}' ',' KEYS_VALUE_PAIRS •
 
-    $default  reduce using rule 73 (KEYS_VALUE_PAIRS)
+    $default  reduce using rule 74 (KEYS_VALUE_PAIRS)
